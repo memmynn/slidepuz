@@ -3,8 +3,8 @@ import Phaser from 'phaser';
 //import logoImg from './assets/logo.png';
 document.body.style.backgroundColor = "black";
 
-// Our scenes
-var gameScene = new Phaser.Scene("gameSc");
+
+
 var titleScene = new Phaser.Scene("title");
 
 var gameOptions = {
@@ -32,7 +32,115 @@ var config = {
 // Our game Object
 var game = new Phaser.Game(config);
 
+// Our scenes
+class gameScene extends Phaser.Scene{
+    constructor(){
+        super("GameScene");
+    }
+    init(data){
+        this.level = data.level;
+        this.stars = data.stars;
+    }
+    preload () {
+       //level sliding puzzle picture array
+       const pictures = [
+         'src/assets/pingu-puzzle.png',
+         'src/assets/karinna-hotel-uludag-genel_86791.jpg'
 
+       ];
+        //set up a small pre-loader progress bar using Phaser's built-in loader plugin
+        var progress = this.add.graphics();
+       
+        this.load.on('progress', function (percent) {
+           //Style our loading bar outline and fill
+           let lineWidth = 4;
+           let lineColor = 0x009FDA;
+           let barColor = 0xffffff;
+       
+           progress.clear();
+           progress.lineStyle(lineWidth, lineColor) //Pingu's English blue!
+           progress.fillStyle(barColor);
+       
+           //Set up the dimensions of our bar (this could be loaded from json or something)
+           let barWidth = 500;
+           let barHeight = 25;
+           let barMargin = 2;
+           let barX = (game.canvas.width - barWidth) * 0.5;
+           let barY = (game.canvas.height - barHeight) * 0.5;
+       
+           //Draw the outline for our loading bar and fill it in
+           progress.strokeRect(barX, barY, barWidth, barHeight);
+           progress.fillRect(barX + barMargin + lineWidth * 0.5, barY + barMargin + lineWidth * 0.5, percent * (barWidth - lineWidth - barMargin * 2), barHeight - lineWidth - barMargin * 2);
+        });
+       
+        this.load.on('complete', function () {
+           progress.destroy();
+        });
+       
+        //load in the complete puzzle image
+        this.load.image('puzzle_bg', pictures[this.level]);
+       
+        //load in the slide sound effect, the background music, and the win sound
+        this.load.audio('snowfall-bgm', 'src/assets/snowfall.mp3');
+        this.load.audio('slide-snd', 'src/assets/dragslide.mp3');
+        this.load.audio('noot-snd', 'src/assets/noot.mp3');
+       
+       }
+      create () {
+        //calculate the width of a puzzle tile based on the size of the puzzle image, the canvas, and the grid
+      let puzzleTex = this.textures.get('puzzle_bg');
+      let puzzleScale = game.canvas.width / puzzleTex.source[0].width;
+      let frameWidth = puzzleTex.source[0].width / gridSize;
+   
+      tileWidth = game.canvas.width / gridSize;
+      halfWidth = tileWidth * 0.5;
+   
+      //add frames to the puzzle image representing the tiles
+      //this could have be done automatically by loading the image as a spritesheet, but doing it manually allows us to accept different sized images
+      for (let i = 0; i < gridSize; ++i) {
+         for (let j = 0; j < gridSize; ++j) {
+            //calling "add" on a texture adds frames to that texture
+            //args: frame ID, texture source index, frame x pos, frame y pos, frame width, frame height
+            puzzleTex.add(i * gridSize + j, 0, j * frameWidth, i * frameWidth, frameWidth, frameWidth);
+         }
+      }
+   
+      //store a list of shuffled tile numbers
+      var tileFrames = shuffleGrid();
+   
+      //create the puzzle tiles — each tile has an image game object, and a row and column
+      for (let i = 0; i < gridSize; i++) {
+         let row = [];
+         for (let j = 0; j < gridSize; j++) {
+            if (i > 0 || j < gridSize - 1) { //leave a blank space in the top-right of the grid
+               //calling "add.<type>" in a scene adds a game object of that type to the scene
+               //args: x position, y position, texture key, and the frame we want the image to display
+               let tile = this.add.image(j * tileWidth + halfWidth, i * tileWidth + halfWidth, 'puzzle_bg', tileFrames.pop());
+               tile.row = i;
+               tile.col = j;
+   
+               //scale the image and tell it to receive input events
+               tile.setScale(puzzleScale);
+               tile.setInteractive();
+   
+               row.push(tile);
+            } else {
+               row.push(null);
+            }
+         }
+         grid.push(row);
+      }
+      //store references to the background music and noot sounds in the scene
+      this.bgm = this.sound.add('snowfall-bgm', { volume: 0.3, loop: true });
+      this.noot = this.sound.add('noot-snd', { volume: 0.5 });
+   
+      //play the background music, and begin listening for clicks/taps on game objects
+      this.bgm.play();
+      this.input.on('gameobjectdown', tileClicked);
+   
+    }
+    
+};
 class playGame extends Phaser.Scene{
     constructor(){
         super("PlayGame");
@@ -193,7 +301,7 @@ class playLevel extends Phaser.Scene{
             font: "32px Arial",
             color: "#ffffff"
         }).setOrigin(0.5);
-        var failLevel = this.add.text(20, 60, "Fail level", {
+        var failLevel = this.add.text(20, 60, "Return back", {
             font: "48px Arial",
             color: "#ff0000"
         });
@@ -207,7 +315,10 @@ class playLevel extends Phaser.Scene{
         });
         oneStarLevel.setInteractive();
         oneStarLevel.on("pointerdown", function(){
-            this.scene.start("gameSc");
+            this.scene.start("GameScene", {
+                level: this.level,
+                stars: this.stars
+            });
             this.stars[this.level] = Math.max(this.stars[this.level], 1);
             if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
                 this.stars[this.level + 1] = 0;
@@ -254,107 +365,7 @@ let gridSize = 4;          //the number of rows and columns in our puzzle (this 
  let tileWidth, halfWidth;   //the width of each tile in pixels (and half that, since the origin of each tile is the centerpoint)
  
 
-gameScene.init = function() {
 
-};
-
-gameScene.preload = function() {
- //set up a small pre-loader progress bar using Phaser's built-in loader plugin
- var progress = this.add.graphics();
-
- this.load.on('progress', function (percent) {
-    //Style our loading bar outline and fill
-    let lineWidth = 4;
-    let lineColor = 0x009FDA;
-    let barColor = 0xffffff;
-
-    progress.clear();
-    progress.lineStyle(lineWidth, lineColor) //Pingu's English blue!
-    progress.fillStyle(barColor);
-
-    //Set up the dimensions of our bar (this could be loaded from json or something)
-    let barWidth = 500;
-    let barHeight = 25;
-    let barMargin = 2;
-    let barX = (game.canvas.width - barWidth) * 0.5;
-    let barY = (game.canvas.height - barHeight) * 0.5;
-
-    //Draw the outline for our loading bar and fill it in
-    progress.strokeRect(barX, barY, barWidth, barHeight);
-    progress.fillRect(barX + barMargin + lineWidth * 0.5, barY + barMargin + lineWidth * 0.5, percent * (barWidth - lineWidth - barMargin * 2), barHeight - lineWidth - barMargin * 2);
- });
-
- this.load.on('complete', function () {
-    progress.destroy();
- });
-
- //load in the complete puzzle image
- this.load.image('puzzle_bg', 'src/assets/pingu-puzzle.png');
-
- //load in the slide sound effect, the background music, and the win sound
- this.load.audio('snowfall-bgm', 'src/assets/snowfall.mp3');
- this.load.audio('slide-snd', 'src/assets/dragslide.mp3');
- this.load.audio('noot-snd', 'src/assets/noot.mp3');
-
-};
-
-gameScene.create = function() {
-     //calculate the width of a puzzle tile based on the size of the puzzle image, the canvas, and the grid
-   let puzzleTex = this.textures.get('puzzle_bg');
-   let puzzleScale = game.canvas.width / puzzleTex.source[0].width;
-   let frameWidth = puzzleTex.source[0].width / gridSize;
-
-   tileWidth = game.canvas.width / gridSize;
-   halfWidth = tileWidth * 0.5;
-
-   //add frames to the puzzle image representing the tiles
-   //this could have be done automatically by loading the image as a spritesheet, but doing it manually allows us to accept different sized images
-   for (let i = 0; i < gridSize; ++i) {
-      for (let j = 0; j < gridSize; ++j) {
-         //calling "add" on a texture adds frames to that texture
-         //args: frame ID, texture source index, frame x pos, frame y pos, frame width, frame height
-         puzzleTex.add(i * gridSize + j, 0, j * frameWidth, i * frameWidth, frameWidth, frameWidth);
-      }
-   }
-
-   //store a list of shuffled tile numbers
-   var tileFrames = shuffleGrid();
-
-   //create the puzzle tiles — each tile has an image game object, and a row and column
-   for (let i = 0; i < gridSize; i++) {
-      let row = [];
-      for (let j = 0; j < gridSize; j++) {
-         if (i > 0 || j < gridSize - 1) { //leave a blank space in the top-right of the grid
-            //calling "add.<type>" in a scene adds a game object of that type to the scene
-            //args: x position, y position, texture key, and the frame we want the image to display
-            let tile = this.add.image(j * tileWidth + halfWidth, i * tileWidth + halfWidth, 'puzzle_bg', tileFrames.pop());
-            tile.row = i;
-            tile.col = j;
-
-            //scale the image and tell it to receive input events
-            tile.setScale(puzzleScale);
-            tile.setInteractive();
-
-            row.push(tile);
-         } else {
-            row.push(null);
-         }
-      }
-      grid.push(row);
-   }
-   //store references to the background music and noot sounds in the scene
-   this.bgm = this.sound.add('snowfall-bgm', { volume: 0.3, loop: true });
-   this.noot = this.sound.add('noot-snd', { volume: 0.5 });
-
-   //play the background music, and begin listening for clicks/taps on game objects
-   this.bgm.play();
-   this.input.on('gameobjectdown', tileClicked);
-
-};
-
-gameScene.update = function() {
-
-};
 
 function tileClicked(pointer, tile) {
     //check for a blank space above
@@ -449,9 +460,7 @@ function shuffleGrid() {
 
    return tileNumbers;
 };
-gameScene.end = function() {
 
-};
 
 titleScene.preload = function() {
     this.load.image('logo', require('./assets/logo.png'));
@@ -461,7 +470,7 @@ titleScene.create = function() {
     var bg = this.add.sprite(0,0,'logo');
     bg.setOrigin(0,0);
 
-    var text = this.add.text(350, 350, 'START!');
+    var text = this.add.text(350, 350, 'START!', {color: "black"});
     text.setInteractive({ useHandCursor: true });
     text.on('pointerdown', () => clickButton());
     function clickButton() {
@@ -479,7 +488,7 @@ titleScene.create = function() {
 game.scene.add('title', titleScene);
 game.scene.add('PlayGame', playGame);
 game.scene.add('PlayLevel', playLevel);
-game.scene.add("gameSc", gameScene);
+game.scene.add("GameScene", gameScene);
 
 // Start the title scene
 game.scene.start('title');
