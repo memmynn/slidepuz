@@ -3,7 +3,14 @@ import Phaser from 'phaser';
 //import logoImg from './assets/logo.png';
 document.body.style.backgroundColor = "black";
 
+let gridSize = 3;          //the number of rows and columns in our puzzle (this global should be set in the HTML, but in case it's not...)
 
+ 
+ /** @global */
+ let grid = [];              //an array which holds the rows of tiles in our puzzle
+ 
+ /** @global */
+ let tileWidth, halfWidth;   //the width of each tile in pixels (and half that, since the origin of each tile is the centerpoint)
 
 var titleScene = new Phaser.Scene("title");
 
@@ -324,7 +331,7 @@ class playLevel extends Phaser.Scene{
                 this.stars[this.level + 1] = 0;
             }
             localStorage.setItem(gameOptions.localStorageName, this.stars.toString());
-            this.scene.start("PlayGame");
+            
         }, this);
         var twoStarsLevel = this.add.text(20, 260, "Get 2 stars", {
             font: "48px Arial",
@@ -355,14 +362,7 @@ class playLevel extends Phaser.Scene{
     }
 }
 
-let gridSize = 4;          //the number of rows and columns in our puzzle (this global should be set in the HTML, but in case it's not...)
 
- 
- /** @global */
- let grid = [];              //an array which holds the rows of tiles in our puzzle
- 
- /** @global */
- let tileWidth, halfWidth;   //the width of each tile in pixels (and half that, since the origin of each tile is the centerpoint)
  
 
 
@@ -421,14 +421,15 @@ function checkWin() {
             return;
          }
       }
-
+    }
+    
       //if we've made it this far the game has been won!
       this.input.off('gameobjectdown');
       this.bgm.stop();
       if( !this.noot.isPlaying ){
          this.noot.play();
       }
-   }
+   
 
 };
 
