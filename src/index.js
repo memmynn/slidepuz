@@ -3,8 +3,7 @@ import Phaser from 'phaser';
 //import logoImg from './assets/logo.png';
 document.body.style.backgroundColor = "black";
 
-let gridSize = 3;          //the number of rows and columns in our puzzle (this global should be set in the HTML, but in case it's not...)
-
+let gridSize;
  
  /** @global */
  let grid = [];              //an array which holds the rows of tiles in our puzzle
@@ -47,6 +46,7 @@ class gameScene extends Phaser.Scene{
     init(data){
         this.level = data.level;
         this.stars = data.stars;
+        this.difficuty = data.difficuty
     }
     preload () {
        //level sliding puzzle picture array
@@ -94,6 +94,8 @@ class gameScene extends Phaser.Scene{
        
        }
       create () {
+        gridSize = this.difficuty;          //the number of rows and columns in our puzzle (this global should be set in the HTML, but in case it's not...)
+
         //calculate the width of a puzzle tile based on the size of the puzzle image, the canvas, and the grid
       let puzzleTex = this.textures.get('puzzle_bg');
       let puzzleScale = game.canvas.width / puzzleTex.source[0].width;
@@ -294,7 +296,8 @@ class playGame extends Phaser.Scene{
             }
         });
     }
-}
+};
+
 class playLevel extends Phaser.Scene{
     constructor(){
         super("PlayLevel");
@@ -324,7 +327,8 @@ class playLevel extends Phaser.Scene{
         oneStarLevel.on("pointerdown", function(){
             this.scene.start("GameScene", {
                 level: this.level,
-                stars: this.stars
+                stars: this.stars,
+                difficuty: 3
             });
             this.stars[this.level] = Math.max(this.stars[this.level], 1);
             if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
@@ -339,12 +343,16 @@ class playLevel extends Phaser.Scene{
         });
         twoStarsLevel.setInteractive();
         twoStarsLevel.on("pointerdown", function(){
+            this.scene.start("GameScene", {
+                level: this.level,
+                stars: this.stars,
+                difficuty: 4
+            });
             this.stars[this.level] = Math.max(this.stars[this.level], 2);
             if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
                 this.stars[this.level + 1] = 0;
             }
             localStorage.setItem(gameOptions.localStorageName, this.stars.toString());
-            this.scene.start("PlayGame");
         }, this);
         var threeStarsLevel = this.add.text(20, 360, "Get 3 stars", {
             font: "48px Arial",
@@ -352,12 +360,16 @@ class playLevel extends Phaser.Scene{
         });
         threeStarsLevel.setInteractive();
         threeStarsLevel.on("pointerdown", function(){
+            this.scene.start("GameScene", {
+                level: this.level,
+                stars: this.stars,
+                difficuty: 4
+            });
             this.stars[this.level] = 3;
             if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
                 this.stars[this.level + 1] = 0;
             }
             localStorage.setItem(gameOptions.localStorageName, this.stars.toString());
-            this.scene.start("PlayGame");
         }, this);
     }
 }
