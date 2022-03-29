@@ -46,7 +46,8 @@ class gameScene extends Phaser.Scene{
     init(data){
         this.level = data.level;
         this.stars = data.stars;
-        this.difficuty = data.difficuty
+        this.difficuty = data.difficuty;
+        this.starCount = data.starCount;
     }
     preload () {
        //level sliding puzzle picture array
@@ -328,14 +329,9 @@ class playLevel extends Phaser.Scene{
             this.scene.start("GameScene", {
                 level: this.level,
                 stars: this.stars,
-                difficuty: 3
-            });
-            this.stars[this.level] = Math.max(this.stars[this.level], 1);
-            if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
-                this.stars[this.level + 1] = 0;
-            }
-            localStorage.setItem(gameOptions.localStorageName, this.stars.toString());
-            
+                difficuty: 3,
+                starCount: 1
+            });            
         }, this);
         var twoStarsLevel = this.add.text(20, 260, "Get 2 stars", {
             font: "48px Arial",
@@ -346,13 +342,10 @@ class playLevel extends Phaser.Scene{
             this.scene.start("GameScene", {
                 level: this.level,
                 stars: this.stars,
-                difficuty: 4
+                difficuty: 3,
+                starCount: 2
             });
-            this.stars[this.level] = Math.max(this.stars[this.level], 2);
-            if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
-                this.stars[this.level + 1] = 0;
-            }
-            localStorage.setItem(gameOptions.localStorageName, this.stars.toString());
+            
         }, this);
         var threeStarsLevel = this.add.text(20, 360, "Get 3 stars", {
             font: "48px Arial",
@@ -363,13 +356,10 @@ class playLevel extends Phaser.Scene{
             this.scene.start("GameScene", {
                 level: this.level,
                 stars: this.stars,
-                difficuty: 4
+                difficuty: 4,
+                starCount: 3
             });
-            this.stars[this.level] = 3;
-            if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
-                this.stars[this.level + 1] = 0;
-            }
-            localStorage.setItem(gameOptions.localStorageName, this.stars.toString());
+            
         }, this);
     }
 }
@@ -440,8 +430,15 @@ function checkWin() {
       this.bgm.stop();
       if( !this.noot.isPlaying ){
          this.noot.play();
-      }
-   
+      };
+      if( this.starCount === 3) {
+        this.stars[this.level] = 3;
+        } else {this.stars[this.level] = Math.max(this.stars[this.level], this.starCount);}
+        
+        if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
+                this.stars[this.level + 1] = 0;
+            }
+        localStorage.setItem(gameOptions.localStorageName, this.stars.toString());
 
 };
 
