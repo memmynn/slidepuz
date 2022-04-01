@@ -3,14 +3,12 @@ import Phaser from 'phaser';
 //import logoImg from './assets/logo.png';
 document.body.style.backgroundColor = "black";
 
-let gridSize;
- 
- /** @global */
- let grid = [];              //an array which holds the rows of tiles in our puzzle
- 
- /** @global */
- let tileWidth, halfWidth;   //the width of each tile in pixels (and half that, since the origin of each tile is the centerpoint)
 
+ 
+ /** @global */
+ 
+ /** @global */
+ 
 var titleScene = new Phaser.Scene("title");
 
 var gameOptions = {
@@ -93,19 +91,37 @@ class gameScene extends Phaser.Scene{
         this.load.audio('slide-snd', 'src/assets/dragslide.mp3');
         this.load.audio('noot-snd', 'src/assets/noot.mp3');
        
-       }
-      create () {
-        gridSize = this.difficuty;          //the number of rows and columns in our puzzle (this global should be set in the HTML, but in case it's not...)
+    };
+    
+    create () {let tileWidth, halfWidth;  //the width of each tile in pixels (and half that, since the origin of each tile is the centerpoint)
 
-        //calculate the width of a puzzle tile based on the size of the puzzle image, the canvas, and the grid
-      let puzzleTex = this.textures.get('puzzle_bg');
-      let puzzleScale = game.canvas.width / puzzleTex.source[0].width;
-      let frameWidth = puzzleTex.source[0].width / gridSize;
+    let gridSize = this.difficuty;          //the number of rows and columns in our puzzle (this global should be set in the HTML, but in case it's not...)
+    let grid = [];              //an array which holds the rows of tiles in our puzzle
+       
+
+    let puzzleTex;
+        puzzleTex = this.textures.get('puzzle_bg');
+      let puzzleScale;
+      puzzleScale = game.canvas.width / puzzleTex.source[0].width;
+      let frameWidth;
+      frameWidth = puzzleTex.source[0].width / gridSize;
    
       tileWidth = game.canvas.width / gridSize;
       halfWidth = tileWidth * 0.5;
-   
-      //add frames to the puzzle image representing the tiles
+   var returne = this.add.text(20, 60, "Return back", {
+            font: "48px Arial",
+            color: "#ff0000"
+        });
+        returne.setInteractive();
+        returne.on("pointerdown", function(){
+            this.scene.start("PlayGame");
+            puzzleTex.destroy();
+            this.sound.removeAll();
+        }, this);
+
+              //store a list of shuffled tile numbers
+      var tileFrames = shuffleGrid();
+      
       //this could have be done automatically by loading the image as a spritesheet, but doing it manually allows us to accept different sized images
       for (let i = 0; i < gridSize; ++i) {
          for (let j = 0; j < gridSize; ++j) {
@@ -115,31 +131,32 @@ class gameScene extends Phaser.Scene{
          }
       }
    
-      //store a list of shuffled tile numbers
-      var tileFrames = shuffleGrid();
-   
+
+   //add frames to the puzzle image representing the tiles
+       //calculate the width of a puzzle tile based on the size of the puzzle image, the canvas, and the grid
+       for (let i = 0; i < gridSize; i++) {
+        let row = [];
+        for (let j = 0; j < gridSize; j++) {
+           if (i > 0 || j < gridSize - 1) { //leave a blank space in the top-right of the grid
+              //calling "add.<type>" in a scene adds a game object of that type to the scene
+              //args: x position, y position, texture key, and the frame we want the image to display
+              let tile = this.add.image(j * tileWidth + halfWidth, i * tileWidth + halfWidth, 'puzzle_bg', tileFrames.pop());
+              tile.row = i;
+              tile.col = j;
+  
+              //scale the image and tell it to receive input events
+              tile.setScale(puzzleScale);
+              tile.setInteractive();
+  
+              row.push(tile);
+           } else {
+              row.push(null);
+           }
+        }
+        grid.push(row);
+     };
       //create the puzzle tiles — each tile has an image game object, and a row and column
-      for (let i = 0; i < gridSize; i++) {
-         let row = [];
-         for (let j = 0; j < gridSize; j++) {
-            if (i > 0 || j < gridSize - 1) { //leave a blank space in the top-right of the grid
-               //calling "add.<type>" in a scene adds a game object of that type to the scene
-               //args: x position, y position, texture key, and the frame we want the image to display
-               let tile = this.add.image(j * tileWidth + halfWidth, i * tileWidth + halfWidth, 'puzzle_bg', tileFrames.pop());
-               tile.row = i;
-               tile.col = j;
-   
-               //scale the image and tell it to receive input events
-               tile.setScale(puzzleScale);
-               tile.setInteractive();
-   
-               row.push(tile);
-            } else {
-               row.push(null);
-            }
-         }
-         grid.push(row);
-      }
+      
       //store references to the background music and noot sounds in the scene
       this.bgm = this.sound.add('snowfall-bgm', { volume: 0.3, loop: true });
       this.noot = this.sound.add('noot-snd', { volume: 0.5 });
@@ -147,10 +164,113 @@ class gameScene extends Phaser.Scene{
       //play the background music, and begin listening for clicks/taps on game objects
       this.bgm.play();
       this.input.on('gameobjectdown', tileClicked);
+
+      function shuffleGrid() {
+        //create an array of tile numbers based on the grid size
+        var tileNumbers = Phaser.Utils.Array.NumberArray(0, gridSize * gridSize - 1); //Returns an array containing numbers in a range (inclusive)
+        Phaser.Utils.Array.Remove(tileNumbers, gridSize - 1); //Remove a frame for the blank space in the top-right
+        Phaser.Utils.Array.Shuffle(tileNumbers); //Phaser has a built-in Fisher–Yates shuffle
+     
+        //to determine solvability, we need to calculate the number of "inversions" in our shuffle
+        //see: https://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html
+        var inversions = 0;
+        for (let i = 0; i < tileNumbers.length - 1; ++i) {
+           for (let j = i + 1; j < tileNumbers.length; ++j) {
+              if (tileNumbers[i] > tileNumbers[j]) {
+                 ++inversions;
+              }
+           }
+        }
+     
+        //if the gridsize is odd, an even number of inversions means the puzzle is solvable
+        //if the gridsize is even, an odd number of inversions means the puzzle is solvable
+        let solvable = gridSize % 2 ^ inversions % 2;
+     
+        //if the puzzle isn't solvable, swap the two lowest tile numbers (0 and 1)
+        if (!solvable) {
+           Phaser.Utils.Array.Swap(tileNumbers, 0, 1);
+        }
+     
+        return tileNumbers;
+        };
+
+        function tileClicked(pointer, tile) {
+            //check for a blank space above
+            if (tile.row > 0 &&
+               !grid[tile.row - 1][tile.col]) {
+               slideTile(tile, tile.row - 1, tile.col);
+            }
+            //...and below
+            else if (tile.row < gridSize - 1 &&
+               !grid[tile.row + 1][tile.col]) {
+               slideTile(tile, tile.row + 1, tile.col);
+            }
+            //...and left
+            else if (tile.col > 0 &&
+               !grid[tile.row][tile.col - 1]) {
+               slideTile(tile, tile.row, tile.col - 1);
+            }
+            //...and right
+            else if (tile.col < gridSize - 1 &&
+               !grid[tile.row][tile.col + 1]) {
+               slideTile(tile, tile.row, tile.col + 1);
+            }
+         };
+
+         function checkWin() {
+            //starting from the top-left of the grid...
+            for (let i = 0; i < gridSize; ++i) {
+               for (let j = 0; j < gridSize; ++j) {
+                  //...if we're not on the empty space, and the tile isn't displaying the expected frame, stop checking
+                  if (grid[i][j] != null && grid[i][j].frame.name != gridSize * i + j) {
+                     return;
+                  }
+               }
+             }
+             
+               //if we've made it this far the game has been won!
+               this.input.off('gameobjectdown');
+               this.bgm.stop();
+               if( !this.noot.isPlaying ){
+                  this.noot.play();
+               };
+               if( this.starCount === 3) {
+                 this.stars[this.level] = 3;
+                 } else {this.stars[this.level] = Math.max(this.stars[this.level], this.starCount);}
+                 
+                 if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
+                         this.stars[this.level + 1] = 0;
+                     }
+                 localStorage.setItem(gameOptions.localStorageName, this.stars.toString());
+         
+         };
+        
+         function slideTile(tile, newRow, newCol) {
+            //tween the tile into the blank space
+            tile.scene.tweens.add({
+               targets: tile,
+               duration: 600,
+               ease: 'Cubic.easeInOut',
+               x: newCol * tileWidth + halfWidth,
+               y: newRow * tileWidth + halfWidth,
+               onComplete: checkWin, //when the tween completes, check to see if the player has won
+               //onCompleteScope: tile.scene //allows me to access the current scene from 'this' in the onComplete function
+            });
+         
+            //swap the tile into the blank grid space, and update its row/column
+            grid[newRow][newCol] = tile;
+            grid[tile.row][tile.col] = null;
+            tile.row = newRow;
+            tile.col = newCol;
+         
+            //play the tile slide sound
+            tile.scene.sound.play('slide-snd');
+         };
    
     }
     
 };
+var GameSCENE = new gameScene();
 class playGame extends Phaser.Scene{
     constructor(){
         super("PlayGame");
@@ -331,7 +451,7 @@ class playLevel extends Phaser.Scene{
                 stars: this.stars,
                 difficuty: 3,
                 starCount: 1
-            });            
+            });           
         }, this);
         var twoStarsLevel = this.add.text(20, 260, "Get 2 stars", {
             font: "48px Arial",
@@ -369,107 +489,13 @@ class playLevel extends Phaser.Scene{
 
 
 
-function tileClicked(pointer, tile) {
-    //check for a blank space above
-    if (tile.row > 0 &&
-       !grid[tile.row - 1][tile.col]) {
-       slideTile(tile, tile.row - 1, tile.col);
-    }
-    //...and below
-    else if (tile.row < gridSize - 1 &&
-       !grid[tile.row + 1][tile.col]) {
-       slideTile(tile, tile.row + 1, tile.col);
-    }
-    //...and left
-    else if (tile.col > 0 &&
-       !grid[tile.row][tile.col - 1]) {
-       slideTile(tile, tile.row, tile.col - 1);
-    }
-    //...and right
-    else if (tile.col < gridSize - 1 &&
-       !grid[tile.row][tile.col + 1]) {
-       slideTile(tile, tile.row, tile.col + 1);
-    }
- }
 
-function slideTile(tile, newRow, newCol) {
-   //tween the tile into the blank space
-   tile.scene.tweens.add({
-      targets: tile,
-      duration: 600,
-      ease: 'Cubic.easeInOut',
-      x: newCol * tileWidth + halfWidth,
-      y: newRow * tileWidth + halfWidth,
-      onComplete: checkWin, //when the tween completes, check to see if the player has won
-      onCompleteScope: tile.scene //allows me to access the current scene from 'this' in the onComplete function
-   });
 
-   //swap the tile into the blank grid space, and update its row/column
-   grid[newRow][newCol] = tile;
-   grid[tile.row][tile.col] = null;
-   tile.row = newRow;
-   tile.col = newCol;
 
-   //play the tile slide sound
-   tile.scene.sound.play('slide-snd');
-};
 
-function checkWin() {
-   //starting from the top-left of the grid...
-   for (let i = 0; i < gridSize; ++i) {
-      for (let j = 0; j < gridSize; ++j) {
-         //...if we're not on the empty space, and the tile isn't displaying the expected frame, stop checking
-         if (grid[i][j] != null && grid[i][j].frame.name != gridSize * i + j) {
-            return;
-         }
-      }
-    }
-    
-      //if we've made it this far the game has been won!
-      this.input.off('gameobjectdown');
-      this.bgm.stop();
-      if( !this.noot.isPlaying ){
-         this.noot.play();
-      };
-      if( this.starCount === 3) {
-        this.stars[this.level] = 3;
-        } else {this.stars[this.level] = Math.max(this.stars[this.level], this.starCount);}
-        
-        if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
-                this.stars[this.level + 1] = 0;
-            }
-        localStorage.setItem(gameOptions.localStorageName, this.stars.toString());
 
-};
 
-function shuffleGrid() {
-   //create an array of tile numbers based on the grid size
-   var tileNumbers = Phaser.Utils.Array.NumberArray(0, gridSize * gridSize - 1); //Returns an array containing numbers in a range (inclusive)
-   Phaser.Utils.Array.Remove(tileNumbers, gridSize - 1); //Remove a frame for the blank space in the top-right
-   Phaser.Utils.Array.Shuffle(tileNumbers); //Phaser has a built-in Fisher–Yates shuffle
 
-   //to determine solvability, we need to calculate the number of "inversions" in our shuffle
-   //see: https://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html
-   var inversions = 0;
-   for (let i = 0; i < tileNumbers.length - 1; ++i) {
-      for (let j = i + 1; j < tileNumbers.length; ++j) {
-         if (tileNumbers[i] > tileNumbers[j]) {
-            ++inversions;
-         }
-      }
-   }
-
-   //if the gridsize is odd, an even number of inversions means the puzzle is solvable
-   //if the gridsize is even, an odd number of inversions means the puzzle is solvable
-   let solvable = gridSize % 2 ^ inversions % 2;
-
-   //if the puzzle isn't solvable, swap the two lowest tile numbers (0 and 1)
-   if (!solvable) {
-      Phaser.Utils.Array.Swap(tileNumbers, 0, 1);
-   }
-
-   return tileNumbers;
-};
 
 
 titleScene.preload = function() {
@@ -498,7 +524,7 @@ titleScene.create = function() {
 game.scene.add('title', titleScene);
 game.scene.add('PlayGame', playGame);
 game.scene.add('PlayLevel', playLevel);
-game.scene.add("GameScene", gameScene);
+game.scene.add("GameScene", GameSCENE);
 
 // Start the title scene
 game.scene.start('title');
