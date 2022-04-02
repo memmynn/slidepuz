@@ -51,7 +51,8 @@ class gameScene extends Phaser.Scene{
        //level sliding puzzle picture array
        const pictures = [
          'src/assets/pingu-puzzle.png',
-         'src/assets/karinna-hotel-uludag-genel_86791.jpg'
+         'src/assets/karinna-hotel-uludag-genel_86791.jpg',
+         'src/assets/white-Snowhotel-Norway-Ski-Shop-Log-Cabin-Kirkenes-2144793.jpg'
 
        ];
         //set up a small pre-loader progress bar using Phaser's built-in loader plugin
@@ -216,7 +217,7 @@ class gameScene extends Phaser.Scene{
                slideTile(tile, tile.row, tile.col + 1);
             }
          };
-
+         let _this = this;
          function checkWin() {
             //starting from the top-left of the grid...
             for (let i = 0; i < gridSize; ++i) {
@@ -229,19 +230,19 @@ class gameScene extends Phaser.Scene{
              }
              
                //if we've made it this far the game has been won!
-               this.input.off('gameobjectdown');
-               this.bgm.stop();
-               if( !this.noot.isPlaying ){
-                  this.noot.play();
+               _this.input.off('gameobjectdown');
+               _this.bgm.stop();
+               if( !_this.noot.isPlaying ){
+                _this.noot.play();
                };
-               if( this.starCount === 3) {
-                 this.stars[this.level] = 3;
-                 } else {this.stars[this.level] = Math.max(this.stars[this.level], this.starCount);}
+               if( _this.starCount === 3) {
+                _this.stars[_this.level] = 3;
+                 } else {_this.stars[_this.level] = Math.max(_this.stars[_this.level], _this.starCount);}
                  
-                 if(this.stars[this.level + 1] != undefined && this.stars[this.level + 1] == -1){
-                         this.stars[this.level + 1] = 0;
+                 if(_this.stars[_this.level + 1] != undefined && _this.stars[_this.level + 1] == -1){
+                    _this.stars[_this.level + 1] = 0;
                      }
-                 localStorage.setItem(gameOptions.localStorageName, this.stars.toString());
+                 localStorage.setItem(gameOptions.localStorageName, _this.stars.toString());
          
          };
         
@@ -254,7 +255,7 @@ class gameScene extends Phaser.Scene{
                x: newCol * tileWidth + halfWidth,
                y: newRow * tileWidth + halfWidth,
                onComplete: checkWin, //when the tween completes, check to see if the player has won
-               //onCompleteScope: tile.scene //allows me to access the current scene from 'this' in the onComplete function
+               onCompleteScope: tile.scene //allows me to access the current scene from 'this' in the onComplete function
             });
          
             //swap the tile into the blank grid space, and update its row/column
