@@ -3,12 +3,6 @@ import Phaser from 'phaser';
 //import logoImg from './assets/logo.png';
 document.body.style.backgroundColor = "black";
 
-
- 
- /** @global */
- 
- /** @global */
- 
 var titleScene = new Phaser.Scene("title");
 
 var gameOptions = {
@@ -52,9 +46,20 @@ class gameScene extends Phaser.Scene{
        const pictures = [
          'src/assets/pingu-puzzle.png',
          'src/assets/karinna-hotel-uludag-genel_86791.jpg',
-         'src/assets/white-Snowhotel-Norway-Ski-Shop-Log-Cabin-Kirkenes-2144793.jpg'
+         'src/assets/white-Snowhotel-Norway-Ski-Shop-Log-Cabin-Kirkenes-2144793.jpg',
+         'src/assets/grass.jpg',
 
        ];
+       const slideSounds = [
+        'src/assets/dragslide.mp3',
+        'src/assets/dragslide.mp3',
+        'src/assets/dragslide.mp3',
+        'src/assets/grass.mp3',
+        'src/assets/grass.mp3',
+        'src/assets/grass.mp3',
+
+
+       ]
         //set up a small pre-loader progress bar using Phaser's built-in loader plugin
         var progress = this.add.graphics();
        
@@ -87,10 +92,13 @@ class gameScene extends Phaser.Scene{
         //load in the complete puzzle image
         this.load.image('puzzle_bg', pictures[this.level]);
        
+        
         //load in the slide sound effect, the background music, and the win sound
         this.load.audio('snowfall-bgm', 'src/assets/snowfall.mp3');
-        this.load.audio('slide-snd', 'src/assets/dragslide.mp3');
+        this.load.audio('slide-snd', slideSounds[this.level]);
         this.load.audio('noot-snd', 'src/assets/noot.mp3');
+        
+
        
     };
     
@@ -99,7 +107,7 @@ class gameScene extends Phaser.Scene{
     let gridSize = this.difficuty;          //the number of rows and columns in our puzzle (this global should be set in the HTML, but in case it's not...)
     let grid = [];              //an array which holds the rows of tiles in our puzzle
        
-
+    var _this = this;
     let puzzleTex;
         puzzleTex = this.textures.get('puzzle_bg');
       let puzzleScale;
@@ -115,9 +123,11 @@ class gameScene extends Phaser.Scene{
         });
         returne.setInteractive();
         returne.on("pointerdown", function(){
-            this.scene.start("PlayGame");
             puzzleTex.destroy();
-            this.sound.removeAll();
+            this.sound.removeAll()
+            this.cache.audio.remove('slide-snd');
+
+        this.scene.start("PlayGame");
         }, this);
 
               //store a list of shuffled tile numbers
@@ -159,11 +169,11 @@ class gameScene extends Phaser.Scene{
       //create the puzzle tiles — each tile has an image game object, and a row and column
       
       //store references to the background music and noot sounds in the scene
-      this.bgm = this.sound.add('snowfall-bgm', { volume: 0.3, loop: true });
+      let bgm = this.sound.add('snowfall-bgm', { volume: 0.3, loop: true });
       this.noot = this.sound.add('noot-snd', { volume: 0.5 });
    
       //play the background music, and begin listening for clicks/taps on game objects
-      this.bgm.play();
+      bgm.play();
       this.input.on('gameobjectdown', tileClicked);
 
       function shuffleGrid() {
@@ -217,7 +227,7 @@ class gameScene extends Phaser.Scene{
                slideTile(tile, tile.row, tile.col + 1);
             }
          };
-         let _this = this;
+         
          function checkWin() {
             //starting from the top-left of the grid...
             for (let i = 0; i < gridSize; ++i) {
@@ -231,7 +241,7 @@ class gameScene extends Phaser.Scene{
              
                //if we've made it this far the game has been won!
                _this.input.off('gameobjectdown');
-               _this.bgm.stop();
+               bgm.stop();
                if( !_this.noot.isPlaying ){
                 _this.noot.play();
                };
@@ -271,7 +281,7 @@ class gameScene extends Phaser.Scene{
     }
     
 };
-var GameSCENE = new gameScene();
+
 class playGame extends Phaser.Scene{
     constructor(){
         super("PlayGame");
@@ -452,7 +462,8 @@ class playLevel extends Phaser.Scene{
                 stars: this.stars,
                 difficuty: 3,
                 starCount: 1
-            });           
+            });
+                       
         }, this);
         var twoStarsLevel = this.add.text(20, 260, "Get 2 stars", {
             font: "48px Arial",
@@ -511,7 +522,7 @@ titleScene.create = function() {
     text.setInteractive({ useHandCursor: true });
     text.on('pointerdown', () => clickButton());
     function clickButton() {
-        titleScene.scene.switch('PlayGame');
+        titleScene.scene.start('PlayGame');
     }
 
 };
@@ -525,7 +536,7 @@ titleScene.create = function() {
 game.scene.add('title', titleScene);
 game.scene.add('PlayGame', playGame);
 game.scene.add('PlayLevel', playLevel);
-game.scene.add("GameScene", GameSCENE);
+game.scene.add("GameScene", gameScene);
 
 // Start the title scene
 game.scene.start('title');
