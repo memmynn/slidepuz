@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import OptionsScene from '../src/OptionsScene';
 
 //import logoImg from './assets/logo.png';
 document.body.style.backgroundColor = "black";
@@ -537,6 +538,6 @@ game.scene.add('title', titleScene);
 game.scene.add('PlayGame', playGame);
 game.scene.add('PlayLevel', playLevel);
 game.scene.add("GameScene", gameScene);
-
+game.scene.add("Options", OptionsScene);
 // Start the title scene
-game.scene.start('title');
+game.scene.start('Options');
