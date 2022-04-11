@@ -513,6 +513,13 @@ class playLevel extends Phaser.Scene{
 
 titleScene.preload = function() {
     this.load.image('logo', require('./assets/logo.png'));
+    // load assets needed in our game
+  this.load.image('blueButton1', 'src/assets/ui/blue_button02.png');
+  this.load.image('blueButton2', 'src/assets/ui/blue_button03.png');
+  this.load.image('phaserLogo', 'src/assets/logo.png');
+  this.load.image('box', 'src/assets/ui/grey_box.png');
+  this.load.image('checkedBox', 'src/assets/ui/blue_boxCheckmark.png');
+  this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
 };
 
 titleScene.create = function() {
@@ -525,6 +532,14 @@ titleScene.create = function() {
     function clickButton() {
         titleScene.scene.start('PlayGame');
     }
+
+    this.optionButton = this.add.sprite(400, 500, 'blueButton1').setInteractive();
+    this.optionText = this.add.text(0, 0, 'Options', { fontSize: '32px', fill: '#000000' });
+    Phaser.Display.Align.In.Center(this.optionText, this.optionButton);
+
+    this.optionButton.on('pointerdown', function (pointer) {
+      this.scene.start('Options');
+    }.bind(this));
 
 };
 
@@ -540,4 +555,4 @@ game.scene.add('PlayLevel', playLevel);
 game.scene.add("GameScene", gameScene);
 game.scene.add("Options", OptionsScene);
 // Start the title scene
-game.scene.start('Options');
+game.scene.start('title');
