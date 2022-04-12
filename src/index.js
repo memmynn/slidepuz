@@ -538,7 +538,7 @@ titleScene.create = function() {
     Phaser.Display.Align.In.Center(this.optionText, this.optionButton);
 
     this.optionButton.on('pointerdown', function (pointer) {
-      this.scene.start('Options');
+      this.scene.switch('Options');
     }.bind(this));
 
 };
