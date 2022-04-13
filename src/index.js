@@ -19,8 +19,8 @@ var gameOptions = {
 var config = {
    title: 'Sliding Puzzly',
 	type: Phaser.AUTO,
-	width: 1024,
-	height: 1024,
+	width: 800,
+	height: 600,
    backgroundColor: "#F5F5DC",
     scale: {  //the scale configuration can make a canvas responsive, though you don't need to include one
         mode: Phaser.Scale.FIT, //Scale.FIT adjusts the canvas to fit inside it's parent while maintaining its aspect ratio
@@ -109,14 +109,21 @@ class gameScene extends Phaser.Scene{
     let grid = [];              //an array which holds the rows of tiles in our puzzle
        
     var _this = this;
+
+    
+    
     let puzzleTex;
         puzzleTex = this.textures.get('puzzle_bg');
       let puzzleScale;
-      puzzleScale = game.canvas.width / puzzleTex.source[0].width;
+      puzzleScale = (game.canvas.width * 0.75) / puzzleTex.source[0].width;
+      var r2 = _this.add.rectangle(0, 0, puzzleScale, puzzleScale, 0x9966ff);
+
+    r2.setStrokeStyle(4, 0xefc53f);
+
       let frameWidth;
       frameWidth = puzzleTex.source[0].width / gridSize;
    
-      tileWidth = game.canvas.width / gridSize;
+      tileWidth = (game.canvas.width * 0.75) / gridSize;
       halfWidth = tileWidth * 0.5;
    var returne = this.add.text(20, 60, "Return back", {
             font: "48px Arial",
