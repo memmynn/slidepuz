@@ -116,11 +116,8 @@ class gameScene extends Phaser.Scene{
         puzzleTex = this.textures.get('puzzle_bg');
       let puzzleScale;
       puzzleScale = (game.canvas.width * 0.75) / puzzleTex.source[0].width;
-      var r2 = _this.add.rectangle(0, 0, puzzleScale, puzzleScale, 0x9966ff);
-
-    r2.setStrokeStyle(4, 0xefc53f);
-
-      let frameWidth;
+      
+     let frameWidth;
       frameWidth = puzzleTex.source[0].width / gridSize;
    
       tileWidth = (game.canvas.width * 0.75) / gridSize;
@@ -285,6 +282,10 @@ class gameScene extends Phaser.Scene{
             //play the tile slide sound
             tile.scene.sound.play('slide-snd');
          };
+    
+         var r3 = this.add.rectangle((game.canvas.width * 0.75)/2, (game.canvas.width * 0.75)/2, game.canvas.width * 0.75 , game.canvas.width * 0.75);
+
+         r3.setStrokeStyle(12, 0x1a65ac);
    
     }
     
