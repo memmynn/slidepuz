@@ -49,7 +49,8 @@ class gameScene extends Phaser.Scene{
          'src/assets/karinna-hotel-uludag-genel_86791.jpg',
          'src/assets/white-Snowhotel-Norway-Ski-Shop-Log-Cabin-Kirkenes-2144793.jpg',
          'src/assets/grass.jpg',
-
+         'src/assets/flowers.jpg',
+         'src/assets/bicycle.jpg'
        ];
        const slideSounds = [
         'src/assets/dragslide.mp3',
@@ -283,7 +284,7 @@ class gameScene extends Phaser.Scene{
             tile.scene.sound.play('slide-snd');
          };
     
-         var r3 = this.add.rectangle((game.canvas.width * 0.75)/2, (game.canvas.width * 0.75)/2, game.canvas.width * 0.75 , game.canvas.width * 0.75);
+         var r3 = this.add.rectangle((game.canvas.width * 0.75)/2, (game.canvas.width * 0.75)/2, game.canvas.width * 0.76 , game.canvas.width * 0.76);
 
          r3.setStrokeStyle(12, 0x1a65ac);
    
