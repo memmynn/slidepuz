@@ -123,8 +123,8 @@ class gameScene extends Phaser.Scene{
    
       tileWidth = (game.canvas.width * 0.75) / gridSize;
       halfWidth = tileWidth * 0.5;
-   var returne = this.add.text(20, 60, "Return back", {
-            font: "48px Arial",
+   var returne = this.add.text(game.canvas.width * 0.78, game.canvas.height * 0.1, "Return back", {
+            font: "30px Arial",
             color: "#ff0000"
         });
         returne.setInteractive();
@@ -304,7 +304,8 @@ class playGame extends Phaser.Scene{
         this.load.image("levelpages", "src/assets/levelpages.png");
         this.load.image("transp", "src/assets/transp.png");
     }
-    create(){
+    create(){let _this = this;
+        
         this.stars = [];
         this.stars[0] = 0;
         this.canMove = true;
@@ -407,6 +408,23 @@ class playGame extends Phaser.Scene{
                 }
             }
         }, this);
+        var returne = this.add.text(game.canvas.width * 0.4, game.canvas.height * 0.8, "Return back", {
+            font: "30px Arial",
+            color: "#ff0000"
+        });
+        
+        returne.setInteractive();
+        returne.on("pointerdown", function(){
+        _this.scene.start("title");
+        }, this);
+
+        this.optionButton = this.add.sprite(400, 500, 'blueButton1').setInteractive();
+    this.optionText = this.add.text(0, 0, 'Options', { fontSize: '32px', fill: '#000000' });
+    Phaser.Display.Align.In.Center(this.optionText, this.optionButton);
+
+    this.optionButton.on('pointerdown', function (pointer) {
+      this.scene.switch('Options');
+    }.bind(this));
     }
     changePage(page){
         this.currentPage += page;

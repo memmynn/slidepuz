@@ -4,6 +4,8 @@ export default class OptionsScene extends Phaser.Scene {
   constructor () {
     super('Options');
   }
+
+  
 preload(){
   // load assets needed in our game
   this.load.image('blueButton1', 'src/assets/ui/blue_button02.png');
