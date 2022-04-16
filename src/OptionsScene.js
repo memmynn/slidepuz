@@ -45,7 +45,7 @@ preload(){
     Phaser.Display.Align.In.Center(this.menuText, this.menuButton);
 
     this.menuButton.on('pointerdown', function (pointer) {
-      this.scene.switch('title');
+      this.scene.switch(this.game.config.optionKey);
     }.bind(this));
 
     this.updateAudio();

@@ -26,6 +26,7 @@ var config = {
         mode: Phaser.Scale.FIT, //Scale.FIT adjusts the canvas to fit inside it's parent while maintaining its aspect ratio
         autoCenter: Phaser.Scale.CENTER_BOTH,
      },
+    optionKey: ""
 };
 
 // Our game Object
@@ -408,7 +409,7 @@ class playGame extends Phaser.Scene{
                 }
             }
         }, this);
-        var returne = this.add.text(game.canvas.width * 0.4, game.canvas.height * 0.8, "Return back", {
+        var returne = this.add.text(game.canvas.width * 0.2, game.canvas.height * 0.8, "Return back", {
             font: "30px Arial",
             color: "#ff0000"
         });
@@ -423,6 +424,7 @@ class playGame extends Phaser.Scene{
     Phaser.Display.Align.In.Center(this.optionText, this.optionButton);
 
     this.optionButton.on('pointerdown', function (pointer) {
+        this.game.config.optionKey = this.scene.key;
       this.scene.switch('Options');
     }.bind(this));
     }
@@ -565,6 +567,7 @@ titleScene.create = function() {
     Phaser.Display.Align.In.Center(this.optionText, this.optionButton);
 
     this.optionButton.on('pointerdown', function (pointer) {
+        this.game.config.optionKey = this.scene.key;
       this.scene.switch('Options');
     }.bind(this));
 
