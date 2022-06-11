@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import OptionsScene from '../src/OptionsScene';
+import Model from './Model';
 
 //import logoImg from './assets/logo.png';
 document.body.style.backgroundColor = "black";
@@ -31,6 +32,8 @@ var config = {
 
 // Our game Object
 var game = new Phaser.Game(config);
+const model = new Model();
+game.globals = { model, bgMusic : null };
 
 // Our scenes
 class gameScene extends Phaser.Scene{
@@ -100,12 +103,12 @@ class gameScene extends Phaser.Scene{
         this.load.audio('snowfall-bgm', 'src/assets/snowfall.mp3');
         this.load.audio('slide-snd', slideSounds[this.level]);
         this.load.audio('noot-snd', 'src/assets/noot.mp3');
-        
 
        
     };
     
-    create () {let tileWidth, halfWidth;  //the width of each tile in pixels (and half that, since the origin of each tile is the centerpoint)
+    create () {
+        let tileWidth, halfWidth;  //the width of each tile in pixels (and half that, since the origin of each tile is the centerpoint)
 
     let gridSize = this.difficuty;          //the number of rows and columns in our puzzle (this global should be set in the HTML, but in case it's not...)
     let grid = [];              //an array which holds the rows of tiles in our puzzle
@@ -131,9 +134,8 @@ class gameScene extends Phaser.Scene{
         returne.setInteractive();
         returne.on("pointerdown", function(){
             puzzleTex.destroy();
-            this.sound.removeAll()
-            this.cache.audio.remove('slide-snd');
-
+            this.sys.game.globals.bgMusic.stop();
+            this.model.bgMusicPlaying = false;
         this.scene.start("PlayGame");
         }, this);
 
@@ -176,11 +178,16 @@ class gameScene extends Phaser.Scene{
       //create the puzzle tiles — each tile has an image game object, and a row and column
       
       //store references to the background music and noot sounds in the scene
-      let bgm = this.sound.add('snowfall-bgm', { volume: 0.3, loop: true });
       this.noot = this.sound.add('noot-snd', { volume: 0.5 });
    
       //play the background music, and begin listening for clicks/taps on game objects
-      bgm.play();
+      this.model = this.sys.game.globals.model;
+if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+    this.bgMusic = this.sound.add('snowfall-bgm', { volume: 0.3, loop: true });
+  this.bgMusic.play();
+  this.model.bgMusicPlaying = true;
+  this.sys.game.globals.bgMusic = this.bgMusic;
+}
       this.input.on('gameobjectdown', tileClicked);
 
       function shuffleGrid() {
@@ -248,7 +255,7 @@ class gameScene extends Phaser.Scene{
              
                //if we've made it this far the game has been won!
                _this.input.off('gameobjectdown');
-               bgm.stop();
+               this.bgMusic.stop();
                if( !_this.noot.isPlaying ){
                 _this.noot.play();
                };
@@ -304,6 +311,8 @@ class playGame extends Phaser.Scene{
         });
         this.load.image("levelpages", "src/assets/levelpages.png");
         this.load.image("transp", "src/assets/transp.png");
+        this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
+
     }
     create(){let _this = this;
         
@@ -422,10 +431,20 @@ class playGame extends Phaser.Scene{
         this.optionButton = this.add.sprite(400, 500, 'blueButton1').setInteractive();
     this.optionText = this.add.text(0, 0, 'Options', { fontSize: '32px', fill: '#000000' });
     Phaser.Display.Align.In.Center(this.optionText, this.optionButton);
+    
+    
+    this.model = this.sys.game.globals.model;
+
+    if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+        this.bgMusic = this.sound.add('bgMusic', { volume: 0.5, loop: true });
+        this.bgMusic.play();
+        this.model.bgMusicPlaying = true;
+        this.sys.game.globals.bgMusic = this.bgMusic;
+      }
 
     this.optionButton.on('pointerdown', function (pointer) {
         this.game.config.optionKey = this.scene.key;
-      this.scene.switch('Options');
+      this.scene.start('Options');
     }.bind(this));
     }
     changePage(page){
@@ -487,6 +506,8 @@ class playLevel extends Phaser.Scene{
         });
         oneStarLevel.setInteractive();
         oneStarLevel.on("pointerdown", function(){
+            this.sys.game.globals.bgMusic.stop();
+            this.model.bgMusicPlaying = false;
             this.scene.start("GameScene", {
                 level: this.level,
                 stars: this.stars,
@@ -501,6 +522,8 @@ class playLevel extends Phaser.Scene{
         });
         twoStarsLevel.setInteractive();
         twoStarsLevel.on("pointerdown", function(){
+            this.sys.game.globals.bgMusic.stop();
+            this.model.bgMusicPlaying = false;
             this.scene.start("GameScene", {
                 level: this.level,
                 stars: this.stars,
@@ -515,6 +538,8 @@ class playLevel extends Phaser.Scene{
         });
         threeStarsLevel.setInteractive();
         threeStarsLevel.on("pointerdown", function(){
+            this.sys.game.globals.bgMusic.stop();
+            this.model.bgMusicPlaying = false
             this.scene.start("GameScene", {
                 level: this.level,
                 stars: this.stars,
@@ -523,6 +548,9 @@ class playLevel extends Phaser.Scene{
             });
             
         }, this);
+
+        this.model = this.sys.game.globals.model;
+
     }
 }
 
@@ -568,8 +596,16 @@ titleScene.create = function() {
 
     this.optionButton.on('pointerdown', function (pointer) {
         this.game.config.optionKey = this.scene.key;
-      this.scene.switch('Options');
+      this.scene.start('Options');
     }.bind(this));
+
+    this.model = this.sys.game.globals.model;
+if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+    this.bgMusic = this.sound.add('bgMusic', { volume: 0.5, loop: true });
+  this.bgMusic.play();
+  this.model.bgMusicPlaying = true;
+  this.sys.game.globals.bgMusic = this.bgMusic;
+};
 
 };
 

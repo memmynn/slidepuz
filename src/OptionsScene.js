@@ -17,8 +17,7 @@ preload(){
 };
 
   create () {
-    this.musicOn = true;
-    this.soundOn = true;
+    this.model = this.sys.game.globals.model;
 
     this.text = this.add.text(300, 100, 'Options', { fontSize: 40 });
     this.musicButton = this.add.image(200, 200, 'checkedBox');
@@ -31,12 +30,12 @@ preload(){
     this.soundButton.setInteractive();
 
     this.musicButton.on('pointerdown', function () {
-      this.musicOn = !this.musicOn;
+      this.model.musicOn = !this.model.musicOn;
       this.updateAudio();
     }.bind(this));
 
     this.soundButton.on('pointerdown', function () {
-      this.soundOn = !this.soundOn;
+      this.model.soundOn = !this.model.soundOn;
       this.updateAudio();
     }.bind(this));
 
@@ -45,23 +44,46 @@ preload(){
     Phaser.Display.Align.In.Center(this.menuText, this.menuButton);
 
     this.menuButton.on('pointerdown', function (pointer) {
-      this.scene.switch(this.game.config.optionKey);
+      this.scene.start(this.game.config.optionKey);
     }.bind(this));
 
     this.updateAudio();
   }
-
   updateAudio() {
-    if (this.musicOn === false) {
+    let _this = this;
+    if (this.model.musicOn === false) {
       this.musicButton.setTexture('box');
+      this.sys.game.globals.bgMusic.stop();
+      this.model.bgMusicPlaying = false;
     } else {
       this.musicButton.setTexture('checkedBox');
+      if (this.model.bgMusicPlaying === false) {
+        this.sys.game.globals.bgMusic.play();
+        this.model.bgMusicPlaying = true;
+      }
     }
-
-    if (this.soundOn === false) {
+    if (this.model.soundOn === false) {
       this.soundButton.setTexture('box');
     } else {
       this.soundButton.setTexture('checkedBox');
     }
+
+    /* if (_this.model.musicOn === false) {
+      _this.musicButton.setTexture('box');
+      if(_this.game.sound.get('snowfall-bgm')){
+      _this.game.sound.stopByKey('snowfall-bgm')};
+    } else {
+      _this.musicButton.setTexture('checkedBox');
+      if(_this.game.sound.get('snowfall-bgm')){
+      _this.game.sound.play('snowfall-bgm')};
+    }
+
+    if (_this.model.soundOn === false) {
+      _this.soundButton.setTexture('box');
+      _this.game.sound.stopByKey(['slide-snd', 'noot-snd']);
+    } else {
+      _this.soundButton.setTexture('checkedBox');
+      _this.game.sound.resumeAll(['slide-snd', 'noot-snd']);
+    }*/
   }
 };
