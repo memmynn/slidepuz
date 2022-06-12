@@ -33,7 +33,7 @@ var config = {
 // Our game Object
 var game = new Phaser.Game(config);
 const model = new Model();
-game.globals = { model, bgMusic : null };
+game.globals = { model, bgMusic : null};
 
 // Our scenes
 class gameScene extends Phaser.Scene{
@@ -136,6 +136,7 @@ class gameScene extends Phaser.Scene{
             puzzleTex.destroy();
             this.sys.game.globals.bgMusic.stop();
             this.model.bgMusicPlaying = false;
+            this.cache.audio.remove('slide-snd');
         this.scene.start("PlayGame");
         }, this);
 
@@ -187,10 +188,13 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
   this.bgMusic.play();
   this.model.bgMusicPlaying = true;
   this.sys.game.globals.bgMusic = this.bgMusic;
-}
+};
+
+
       this.input.on('gameobjectdown', tileClicked);
 
       function shuffleGrid() {
+        
         //create an array of tile numbers based on the grid size
         var tileNumbers = Phaser.Utils.Array.NumberArray(0, gridSize * gridSize - 1); //Returns an array containing numbers in a range (inclusive)
         Phaser.Utils.Array.Remove(tileNumbers, gridSize - 1); //Remove a frame for the blank space in the top-right
@@ -271,6 +275,7 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
          };
         
          function slideTile(tile, newRow, newCol) {
+            
             //tween the tile into the blank space
             tile.scene.tweens.add({
                targets: tile,
@@ -289,7 +294,9 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
             tile.col = newCol;
          
             //play the tile slide sound
-            tile.scene.sound.play('slide-snd');
+            if (_this.model.soundOn === true ) {
+                tile.scene.sound.play('slide-snd');
+            }
          };
     
          var r3 = this.add.rectangle((game.canvas.width * 0.75)/2, (game.canvas.width * 0.75)/2, game.canvas.width * 0.76 , game.canvas.width * 0.76);

@@ -22,4 +22,5 @@ export default class Model {
     get bgMusicPlaying() {
       return this._bgMusicPlaying;
     }
+    
   }

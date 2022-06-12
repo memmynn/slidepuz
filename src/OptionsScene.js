@@ -40,7 +40,7 @@ preload(){
     }.bind(this));
 
     this.menuButton = this.add.sprite(400, 500, 'blueButton1').setInteractive();
-    this.menuText = this.add.text(0, 0, 'Main Menu', { fontSize: '32px', fill: '#000000' });
+    this.menuText = this.add.text(0, 0, 'Return Back', { fontSize: '32px', fill: '#000000' });
     Phaser.Display.Align.In.Center(this.menuText, this.menuButton);
 
     this.menuButton.on('pointerdown', function (pointer) {
