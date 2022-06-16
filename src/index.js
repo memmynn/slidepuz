@@ -259,8 +259,10 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
              
                //if we've made it this far the game has been won!
                _this.input.off('gameobjectdown');
-               this.bgMusic.stop();
-               if( !_this.noot.isPlaying ){
+               if(this.bgMusic){
+               this.bgMusic.stop()};
+               if( !_this.noot.isPlaying && _this.model.soundOn === true ){
+                
                 _this.noot.play();
                };
                if( _this.starCount === 3) {
@@ -271,8 +273,13 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
                     _this.stars[_this.level + 1] = 0;
                      }
                  localStorage.setItem(gameOptions.localStorageName, _this.stars.toString());
-         
-         };
+
+                this.winButton = this.add.sprite(350, 400, 'blueButton1').setInteractive();
+                this.winText = this.add.text(0, 0, 'YOU WIN!', { fontSize: '32px', fill: '#000000' });
+                
+    Phaser.Display.Align.In.Center(this.winText, this.winButton);
+
+    };
         
          function slideTile(tile, newRow, newCol) {
             
@@ -425,19 +432,14 @@ class playGame extends Phaser.Scene{
                 }
             }
         }, this);
-        var returne = this.add.text(game.canvas.width * 0.2, game.canvas.height * 0.8, "Return back", {
-            font: "30px Arial",
-            color: "#ff0000"
-        });
-        
-        returne.setInteractive();
-        returne.on("pointerdown", function(){
-        _this.scene.start("title");
-        }, this);
 
-        this.optionButton = this.add.sprite(400, 500, 'blueButton1').setInteractive();
-    this.optionText = this.add.text(0, 0, 'Options', { fontSize: '32px', fill: '#000000' });
-    Phaser.Display.Align.In.Center(this.optionText, this.optionButton);
+        this.menuButton = this.add.sprite(400, 500, 'blueButton1').setInteractive();
+    this.menuText = this.add.text(0, 0, 'Back', { fontSize: '32px', fill: '#000000' });
+    Phaser.Display.Align.In.Center(this.menuText, this.menuButton);
+
+    this.menuButton.on('pointerdown', function (pointer) {
+      this.scene.start('title');
+    }.bind(this));
     
     
     this.model = this.sys.game.globals.model;
@@ -449,10 +451,7 @@ class playGame extends Phaser.Scene{
         this.sys.game.globals.bgMusic = this.bgMusic;
       }
 
-    this.optionButton.on('pointerdown', function (pointer) {
-        this.game.config.optionKey = this.scene.key;
-      this.scene.start('Options');
-    }.bind(this));
+    
     }
     changePage(page){
         this.currentPage += page;
