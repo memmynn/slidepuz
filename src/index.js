@@ -274,10 +274,24 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
                      }
                  localStorage.setItem(gameOptions.localStorageName, _this.stars.toString());
 
-                this.winButton = this.add.sprite(350, 400, 'blueButton1').setInteractive();
-                this.winText = this.add.text(0, 0, 'YOU WIN!', { fontSize: '32px', fill: '#000000' });
-                
+                this.winButton = this.add.sprite(330, 395, 'blueButton1').setInteractive();
+                this.winText = this.add.text(0, 0, 'WELL DONE!', { fontSize: '100px', fill: '#000000' });
+                this.nextButton = this.add.sprite(330, 55, 'blueButton1').setInteractive();
+                this.nextText = this.add.text(0, 0, 'NEXT LEVEL', { fontSize: '75px', fill: '#000000' });
+                this.nextButton.on("pointerdown", function(){
+                    puzzleTex.destroy();
+                    this.sys.game.globals.bgMusic.stop();
+                    this.model.bgMusicPlaying = false;
+                    this.cache.audio.remove('slide-snd');
+                this.scene.start("GameScene", {
+                    level: _this.level+1,
+                    stars: _this.stars[_this.level+1],
+                    difficuty: 3,
+                    starCount: 1
+                });
+                }, this);
     Phaser.Display.Align.In.Center(this.winText, this.winButton);
+    Phaser.Display.Align.In.Center(this.nextText, this.nextButton);
 
     };
         
@@ -315,7 +329,7 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
 };
 
 class playGame extends Phaser.Scene{
-    constructor(){
+    constructor(){ 
         super("PlayGame");
     }
     preload(){
