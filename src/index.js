@@ -279,17 +279,23 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
                 this.nextButton = this.add.sprite(330, 55, 'blueButton1').setInteractive();
                 this.nextText = this.add.text(0, 0, 'NEXT LEVEL', { fontSize: '75px', fill: '#000000' });
                 this.nextButton.on("pointerdown", function(){
+                    
                     puzzleTex.destroy();
                     this.sys.game.globals.bgMusic.stop();
                     this.model.bgMusicPlaying = false;
                     this.cache.audio.remove('slide-snd');
-                this.scene.start("GameScene", {
-                    level: _this.level+1,
-                    stars: _this.stars[_this.level+1],
-                    difficuty: 3,
-                    starCount: 1
-                });
+                    if(_this.level < 11){
+                        this.scene.start("GameScene", {
+                        level: _this.level+1,
+                        stars: _this.stars,
+                        difficuty: _this.difficuty,
+                        starCount: _this.starCount
+                    }); 
+                    };        
+
+                
                 }, this);
+                
     Phaser.Display.Align.In.Center(this.winText, this.winButton);
     Phaser.Display.Align.In.Center(this.nextText, this.nextButton);
 
