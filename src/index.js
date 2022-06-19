@@ -54,7 +54,13 @@ class gameScene extends Phaser.Scene{
          'src/assets/white-Snowhotel-Norway-Ski-Shop-Log-Cabin-Kirkenes-2144793.jpg',
          'src/assets/grass.jpg',
          'src/assets/flowers.jpg',
-         'src/assets/bicycle.jpg'
+         'src/assets/bicycle.jpg',
+         'src/assets/summer1.jpg',
+         'src/assets/summer2.jpg',
+         'src/assets/summer3.jpg',
+         'src/assets/autumn1.jpg',
+         'src/assets/autumn2.jpg',
+         'src/assets/autumn3.jpg',
        ];
        const slideSounds = [
         'src/assets/dragslide.mp3',
@@ -63,8 +69,12 @@ class gameScene extends Phaser.Scene{
         'src/assets/grass.mp3',
         'src/assets/grass.mp3',
         'src/assets/grass.mp3',
-
-
+        'src/assets/water.wav',
+        'src/assets/water.wav',
+        'src/assets/water.wav',
+        'src/assets/leaves-14478.mp3',
+        'src/assets/leaves-14478.mp3',
+        'src/assets/leaves-14478.mp3',
        ]
         //set up a small pre-loader progress bar using Phaser's built-in loader plugin
         var progress = this.add.graphics();
@@ -276,30 +286,32 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
 
                 this.winButton = this.add.sprite(330, 395, 'blueButton1').setInteractive();
                 this.winText = this.add.text(0, 0, 'WELL DONE!', { fontSize: '100px', fill: '#000000' });
+                Phaser.Display.Align.In.Center(this.winText, this.winButton);
+                if(_this.level<11){
                 this.nextButton = this.add.sprite(330, 55, 'blueButton1').setInteractive();
                 this.nextText = this.add.text(0, 0, 'NEXT LEVEL', { fontSize: '75px', fill: '#000000' });
                 this.nextButton.on("pointerdown", function(){
                     
                     puzzleTex.destroy();
-                    this.sys.game.globals.bgMusic.stop();
-                    this.model.bgMusicPlaying = false;
-                    this.cache.audio.remove('slide-snd');
-                    if(_this.level < 11){
-                        this.scene.start("GameScene", {
+                    _this.sys.game.globals.bgMusic.stop();
+                    _this.model.bgMusicPlaying = false;
+                    _this.cache.audio.remove('slide-snd');
+                    
+                        _this.scene.start("GameScene", {
                         level: _this.level+1,
                         stars: _this.stars,
                         difficuty: _this.difficuty,
                         starCount: _this.starCount
                     }); 
-                    };        
+                        
 
                 
                 }, this);
                 
-    Phaser.Display.Align.In.Center(this.winText, this.winButton);
+    
     Phaser.Display.Align.In.Center(this.nextText, this.nextButton);
 
-    };
+}};
         
          function slideTile(tile, newRow, newCol) {
             
