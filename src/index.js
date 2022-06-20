@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import OptionsScene from '../src/OptionsScene';
 import Model from './Model';
+import Ending from './ending';
 
 //import logoImg from './assets/logo.png';
 document.body.style.backgroundColor = "black";
@@ -650,7 +651,52 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
 
 
 
-
+class CreditsScene extends Phaser.Scene {
+    constructor () {
+      super('Credits');
+    }
+  
+    create () {
+      this.creditsText = this.add.text(0, 0, 'Credits', { fontSize: '32px', fill: '#fff' });
+      this.madeByText = this.add.text(0, 0, 'Created By: Placeholder', { fontSize: '26px', fill: '#fff' });
+      this.zone = this.add.zone(config.width/2, config.height/2, config.width, config.height);
+  
+      Phaser.Display.Align.In.Center(
+        this.creditsText,
+        this.zone
+      );
+  
+      Phaser.Display.Align.In.Center(
+        this.madeByText,
+        this.zone
+      );
+  
+      this.madeByText.setY(1000);
+  
+      this.creditsTween = this.tweens.add({
+        targets: this.creditsText,
+        y: -100,
+        ease: 'Power1',
+        duration: 3000,
+        delay: 1000,
+        onComplete: function () {
+          this.destroy;
+        }
+      });
+  
+      this.madeByTween = this.tweens.add({
+        targets: this.madeByText,
+        y: -300,
+        ease: 'Power1',
+        duration: 8000,
+        delay: 1000,
+        onComplete: function () {
+          this.madeByTween.destroy;
+          this.scene.start('Title');
+        }.bind(this)
+      });
+    }
+  };
 
 // Add both scenes (it does not start them)
 game.scene.add('title', titleScene);
@@ -658,5 +704,8 @@ game.scene.add('PlayGame', playGame);
 game.scene.add('PlayLevel', playLevel);
 game.scene.add("GameScene", gameScene);
 game.scene.add("Options", OptionsScene);
+game.scene.add("Credits", CreditsScene);
+game.scene.add("ending", Ending);
+
 // Start the title scene
-game.scene.start('title');
+game.scene.start('ending');
