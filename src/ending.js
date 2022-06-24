@@ -29,24 +29,114 @@ export default class Ending extends Phaser.Scene
 
     create ()
     {
-        for(var pic=0; pic < 12; pic++) {pic = this.add.image(900, 300, `${pic}`)
-        this.tweens.add({
-            targets: pic,
-            x: 100,
-            ease: 'Sine.easeInOut',
-            yoyo: true,
-            repeat: -1,
-            duration: 3000
-        });
+        var pictures = [];
 
-        this.cameras.main.once('camerafadeincomplete', function (camera) {
-            camera.fadeOut(6000);
-        });
+        for ( var pic=0; pic < 12; pic++) {
+            let picture = this.add.image(50, 50, `${pic}`).setAlpha(0);
+        pictures.push(picture);
+        };
 
-        this.cameras.main.fadeIn(6000);
-    }
+        var timeline = this.tweens.createTimeline();
 
-        
+    timeline.add({
+        targets: pictures[0],
+        x: 600,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[1],
+        y: 500,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[2],
+        x: 100,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[3],
+        y: 100,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[4],
+        x: 600,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[5],
+        y: 500,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[6],
+        x: 100,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[7],
+        y: 100,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[8],
+        y: 100,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[9],
+        x: 600,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[10],
+        y: 500,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+
+    timeline.add({
+        targets: pictures[11],
+        x: 100,
+        ease: 'Power1',
+        alpha: 1,
+        duration: 3000
+    });
+    
+    timeline.play();
+
+    console.log(timeline);
     }
 }
 
