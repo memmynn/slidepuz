@@ -3,8 +3,7 @@ import OptionsScene from '../src/OptionsScene';
 import Model from './Model';
 import Ending from './ending';
 
-//import logoImg from './assets/logo.png';
-document.body.style.backgroundColor = "black";
+
 
 var titleScene = new Phaser.Scene("title");
 
@@ -108,7 +107,7 @@ class gameScene extends Phaser.Scene{
        
         //load in the complete puzzle image
         this.load.image('puzzle_bg', pictures[this.level]);
-       
+        this.load.image('background', 'src/assets/ui/BG.png');
         
         //load in the slide sound effect, the background music, and the win sound
         this.load.audio('snowfall-bgm', 'src/assets/snowfall.mp3');
@@ -119,6 +118,8 @@ class gameScene extends Phaser.Scene{
     };
     
     create () {
+        this.add.image(400, 300, "background");
+
         let tileWidth, halfWidth;  //the width of each tile in pixels (and half that, since the origin of each tile is the centerpoint)
 
     let gridSize = this.difficuty;          //the number of rows and columns in our puzzle (this global should be set in the HTML, but in case it's not...)
@@ -362,7 +363,10 @@ class playGame extends Phaser.Scene{
         this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
 
     }
-    create(){let _this = this;
+    create(){
+        this.add.image(400, 300, "background");
+
+        let _this = this;
         
         this.stars = [];
         this.stars[0] = 0;
@@ -528,6 +532,8 @@ class playLevel extends Phaser.Scene{
         this.stars = data.stars;
     }
     create(){
+        this.add.image(400, 300, "background");
+
         this.add.text(game.config.width / 2, 20, "Play level " + this.level.toString(), {
             font: "32px Arial",
             color: "#ffffff"
@@ -609,6 +615,8 @@ class playLevel extends Phaser.Scene{
 
 
 titleScene.preload = function() {
+    this.load.image('background', 'src/assets/ui/BG.png');
+
     this.load.image('logo', require('./assets/logo.png'));
     // load assets needed in our game
   this.load.image('blueButton1', 'src/assets/ui/blue_button02.png');
@@ -620,6 +628,9 @@ titleScene.preload = function() {
 };
 
 titleScene.create = function() {
+
+    this.add.image(400, 300, "background");
+
     var bg = this.add.sprite(0,0,'logo');
     bg.setOrigin(0,0);
 
@@ -666,9 +677,14 @@ class CreditsScene extends Phaser.Scene {
       super('Credits');
     }
   
+    preload() {
+        this.load.image('background', 'src/assets/ui/BG.png');
+    }
     create () {
+        this.add.image(400, 300, "background");
+
       this.creditsText = this.add.text(0, 0, 'Credits', { fontSize: '32px', fill: '#fff' });
-      this.madeByText = this.add.text(0, 0, 'Created By: Placeholder', { fontSize: '26px', fill: '#fff' });
+      this.madeByText = this.add.text(0, 0, 'Created By: Mehmet Emin Uyar', { fontSize: '45px', fill: '#fff' });
       this.zone = this.add.zone(config.width/2, config.height/2, config.width, config.height);
   
       Phaser.Display.Align.In.Center(
