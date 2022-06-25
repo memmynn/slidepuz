@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import OptionsScene from '../src/OptionsScene';
 import Model from './Model';
 import Ending from './ending';
-
-
+import CreditsScene from './credits';
+import { config } from './config';
 
 var titleScene = new Phaser.Scene("title");
 
@@ -16,19 +16,6 @@ var gameOptions = {
    spacing: 20,
    localStorageName: "levelselect"
 }
-// We no longer add the scene to the config
-var config = {
-   title: 'Sliding Puzzly',
-	type: Phaser.AUTO,
-	width: 800,
-	height: 600,
-   backgroundColor: "#F5F5DC",
-    scale: {  //the scale configuration can make a canvas responsive, though you don't need to include one
-        mode: Phaser.Scale.FIT, //Scale.FIT adjusts the canvas to fit inside it's parent while maintaining its aspect ratio
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-     },
-    optionKey: ""
-};
 
 // Our game Object
 var game = new Phaser.Game(config);
@@ -672,57 +659,7 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
 
 
 
-class CreditsScene extends Phaser.Scene {
-    constructor () {
-      super('Credits');
-    }
-  
-    preload() {
-        this.load.image('background', 'src/assets/ui/BG.png');
-    }
-    create () {
-        this.add.image(400, 300, "background");
 
-      this.creditsText = this.add.text(0, 0, 'Credits', { fontSize: '32px', fill: '#fff' });
-      this.madeByText = this.add.text(0, 0, 'Created By: Mehmet Emin Uyar', { fontSize: '45px', fill: '#fff' });
-      this.zone = this.add.zone(config.width/2, config.height/2, config.width, config.height);
-  
-      Phaser.Display.Align.In.Center(
-        this.creditsText,
-        this.zone
-      );
-  
-      Phaser.Display.Align.In.Center(
-        this.madeByText,
-        this.zone
-      );
-  
-      this.madeByText.setY(1000);
-  
-      this.creditsTween = this.tweens.add({
-        targets: this.creditsText,
-        y: -100,
-        ease: 'Power1',
-        duration: 3000,
-        delay: 1000,
-        onComplete: function () {
-          this.destroy;
-        }
-      });
-  
-      this.madeByTween = this.tweens.add({
-        targets: this.madeByText,
-        y: -300,
-        ease: 'Power1',
-        duration: 8000,
-        delay: 1000,
-        onComplete: function () {
-          this.madeByTween.destroy;
-          this.scene.start('title');
-        }.bind(this)
-      });
-    }
-  };
 
 // Add both scenes (it does not start them)
 game.scene.add('title', titleScene);
