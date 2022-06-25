@@ -24,11 +24,14 @@ export default class Ending extends Phaser.Scene
         
         for (var pic in pictures){
             this.load.image(`${pic}`, pictures[pic]);
-        }
+        };
+        this.load.audio('backGM', 'src/assets/POL-go-time-short.wav');
     }
 
     create ()
     {
+        this.bgMusic = this.sound.add('backGM', { volume: 0.3, loop: true });
+  this.bgMusic.play();
         var pictures = [];
 
         for ( var pic=0; pic < 12; pic++) {

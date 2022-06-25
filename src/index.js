@@ -312,7 +312,8 @@ if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
     
     Phaser.Display.Align.In.Center(this.nextText, this.nextButton);
 
-}};
+} else {_this.scene.start('ending')};
+};
         
          function slideTile(tile, newRow, newCol) {
             
@@ -566,7 +567,7 @@ class playLevel extends Phaser.Scene{
             this.scene.start("GameScene", {
                 level: this.level,
                 stars: this.stars,
-                difficuty: 3,
+                difficuty: 4,
                 starCount: 2
             });
             
@@ -582,7 +583,7 @@ class playLevel extends Phaser.Scene{
             this.scene.start("GameScene", {
                 level: this.level,
                 stars: this.stars,
-                difficuty: 4,
+                difficuty: 5,
                 starCount: 3
             });
             
@@ -636,6 +637,15 @@ titleScene.create = function() {
     this.optionButton.on('pointerdown', function (pointer) {
         this.game.config.optionKey = this.scene.key;
       this.scene.start('Options');
+    }.bind(this));
+
+    this.creditsButton = this.add.sprite(400, 550, 'blueButton1').setInteractive();
+    this.creditsText = this.add.text(0, 0, 'Credits', { fontSize: '32px', fill: '#000000' });
+    Phaser.Display.Align.In.Center(this.creditsText, this.creditsButton);
+
+    this.creditsButton.on('pointerdown', function (pointer) {
+        
+      this.scene.start('Credits');
     }.bind(this));
 
     this.model = this.sys.game.globals.model;
@@ -692,7 +702,7 @@ class CreditsScene extends Phaser.Scene {
         delay: 1000,
         onComplete: function () {
           this.madeByTween.destroy;
-          this.scene.start('Title');
+          this.scene.start('title');
         }.bind(this)
       });
     }
@@ -708,4 +718,4 @@ game.scene.add("Credits", CreditsScene);
 game.scene.add("ending", Ending);
 
 // Start the title scene
-game.scene.start('ending');
+game.scene.start('title');
