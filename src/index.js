@@ -5,6 +5,7 @@ import Ending from './ending';
 import CreditsScene from './credits';
 import { config } from './config';
 
+
 var titleScene = new Phaser.Scene("title");
 
 var gameOptions = {
@@ -604,24 +605,37 @@ class playLevel extends Phaser.Scene{
 titleScene.preload = function() {
     this.load.image('background', 'src/assets/ui/BG.png');
 
-    this.load.image('logo', require('./assets/logo.png'));
+    //this.load.image('logo', require('./assets/logo.png'));
     // load assets needed in our game
   this.load.image('blueButton1', 'src/assets/ui/blue_button02.png');
   this.load.image('blueButton2', 'src/assets/ui/blue_button03.png');
-  this.load.image('phaserLogo', 'src/assets/logo.png');
+  //this.load.image('phaserLogo', 'src/assets/logo.png');
   this.load.image('box', 'src/assets/ui/grey_box.png');
   this.load.image('checkedBox', 'src/assets/ui/blue_boxCheckmark.png');
   this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
+  
 };
 
 titleScene.create = function() {
 
     this.add.image(400, 300, "background");
+    const x = this.scale.width * 0.1
+		const y = this.scale.height * 0.2
 
-    var bg = this.add.sprite(0,0,'logo');
-    bg.setOrigin(0,0);
+		this.add.text(x, y, 'slidy puzz', {
+			fontFamily: 'cursive',
+			fontSize: '128px',
+			color: '#fff',
+			fontStyle: 'normal',
+			stroke: '#374F9D',
+			strokeThickness: 30
+		});
+	
 
-    var text = this.add.text(350, 350, 'START!', {color: "black"});
+    //var bg = this.add.sprite(0,0,'logo');
+    //bg.setOrigin(0,0);
+
+    var text = this.add.text(300, 350, 'START!', {  fontFamily: 'cursive', fontSize: '55px', color: "white"});
     text.setInteractive({ useHandCursor: true });
     text.on('pointerdown', () => clickButton());
     function clickButton() {
