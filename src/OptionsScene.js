@@ -8,11 +8,13 @@ export default class OptionsScene extends Phaser.Scene {
   
 preload(){
   // load assets needed in our game
-  this.load.image('blueButton1', 'src/assets/ui/blue_button02.png');
-  this.load.image('blueButton2', 'src/assets/ui/blue_button03.png');
+  this.load.image('blueButton', 'src/assets/ui/Button_62.png');
+ 
   this.load.image('phaserLogo', 'src/assets/logo.png');
-  this.load.image('box', 'src/assets/ui/grey_box.png');
-  this.load.image('checkedBox', 'src/assets/ui/blue_boxCheckmark.png');
+  this.load.image('musicBox', 'src/assets/ui/slice_Button_93.png');
+  this.load.image('soundBox', 'src/assets/ui/slice_Button_94.png');
+  this.load.image('sBox', 'src/assets/ui/slice_Button_133.png');
+  this.load.image('mBox', 'src/assets/ui/slice_Button_132.png');
   this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
 };
 
@@ -20,14 +22,14 @@ preload(){
     this.model = this.sys.game.globals.model;
 
     this.text = this.add.text(300, 100, 'Options', { fontSize: 40 });
-    this.musicButton = this.add.image(200, 200, 'checkedBox');
-    this.musicText = this.add.text(250, 190, 'Music Enabled', { fontSize: 24 , fill: '#000000'});
+    this.musicButton = this.add.image(400, 200, 'musicBox');
 
-    this.soundButton = this.add.image(200, 300, 'checkedBox');
-    this.soundText = this.add.text(250, 290, 'Sound Enabled', { fontSize: 24, fill: '#000000' });
+    this.soundButton = this.add.image(400, 300, 'soundBox');
 
-    this.musicButton.setInteractive();
-    this.soundButton.setInteractive();
+    this.musicButton.    setScale(0.5).
+    setInteractive({ useHandCursor: true });
+    this.soundButton.    setScale(0.5).
+    setInteractive({ useHandCursor: true });
 
     this.musicButton.on('pointerdown', function () {
       this.model.musicOn = !this.model.musicOn;
@@ -39,9 +41,10 @@ preload(){
       this.updateAudio();
     }.bind(this));
 
-    this.menuButton = this.add.sprite(400, 500, 'blueButton1').setInteractive();
-    this.menuText = this.add.text(0, 0, 'Return Back', { fontSize: '32px', fill: '#000000' });
-    Phaser.Display.Align.In.Center(this.menuText, this.menuButton);
+    this.menuButton = this.add.sprite(400, 500, 'blueButton').
+    setScale(0.5)
+    .setInteractive({ useHandCursor: true });
+    
 
     this.menuButton.on('pointerdown', function (pointer) {
       this.scene.start(this.game.config.optionKey);
@@ -52,20 +55,20 @@ preload(){
   updateAudio() {
     let _this = this;
     if (this.model.musicOn === false) {
-      this.musicButton.setTexture('box');
+      this.musicButton.setTexture('mBox');
       this.sys.game.globals.bgMusic.stop();
       this.model.bgMusicPlaying = false;
     } else {
-      this.musicButton.setTexture('checkedBox');
+      this.musicButton.setTexture('musicBox');
       if (this.model.bgMusicPlaying === false) {
         this.sys.game.globals.bgMusic.play();
         this.model.bgMusicPlaying = true;
       }
     }
     if (this.model.soundOn === false) {
-      this.soundButton.setTexture('box');
+      this.soundButton.setTexture('sBox');
     } else {
-      this.soundButton.setTexture('checkedBox');
+      this.soundButton.setTexture('soundBox');
     }
 
     /* if (_this.model.musicOn === false) {

@@ -627,7 +627,7 @@ titleScene.create = function() {
 
     //var bg = this.add.sprite(0,0,'logo');
     //bg.setOrigin(0,0);
-    this.startButton = this.add.sprite(400, 350, 'blueButton3').setScale(0.5).
+    this.startButton = this.add.sprite(400, 400, 'blueButton3').setScale(0.37).
     setInteractive({ useHandCursor: true });
 
    this.text = this.add.text(300, 350, 'sTaRt!', {  fontFamily: 'cursive', fontSize: '38px', color: "white"});
@@ -640,8 +640,8 @@ function clickButton() {
     
 
 
-    this.optionButton = this.add.sprite(400, 450, 'blueButton3').
-    setScale(0.5).
+    this.optionButton = this.add.sprite(400, 475, 'blueButton3').
+    setScale(0.37).
     setInteractive({ useHandCursor: true });
     this.optionText = this.add.text(0, 0, 'oPtiOns', {  fontFamily: 'cursive', fontSize: '38px', color: "white"});
     Phaser.Display.Align.In.Center(this.optionText, this.optionButton);
@@ -651,7 +651,7 @@ function clickButton() {
       this.scene.start('Options');
     }.bind(this));
 
-    this.creditsButton = this.add.sprite(400, 550, 'blueButton3').setScale(0.5).
+    this.creditsButton = this.add.sprite(400, 550, 'blueButton3').setScale(0.37).
     setInteractive({ useHandCursor: true });
     this.creditsText = this.add.text(0, 0, 'cReditS', {  fontFamily: 'cursive', fontSize: '38px', color: "white"});
     Phaser.Display.Align.In.Center(this.creditsText, this.creditsButton);
