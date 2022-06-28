@@ -1,6 +1,5 @@
 import { config } from "./config";
 
-
 export default class gameScene extends Phaser.Scene{
     constructor(){
         super("GameScene");
@@ -112,7 +111,7 @@ export default class gameScene extends Phaser.Scene{
         returne.setInteractive();
         returne.on("pointerdown", function(){
             puzzleTex.destroy();
-            this.sys.config.globals.bgMusic.stop();
+            this.sys.game.globals.bgMusic.stop();
             this.model.bgMusicPlaying = false;
             this.cache.audio.remove('slide-snd');
         this.scene.start("PlayGame");
@@ -160,12 +159,12 @@ export default class gameScene extends Phaser.Scene{
       this.noot = this.sound.add('noot-snd', { volume: 0.5 });
    
       //play the background music, and begin listening for clicks/taps on game objects
-      this.model = this.sys.config.globals.model;
+      this.model = this.sys.game.globals.model;
     if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
     this.bgMusic = this.sound.add('snowfall-bgm', { volume: 0.3, loop: true });
   this.bgMusic.play();
   this.model.bgMusicPlaying = true;
-  this.sys.config.globals.bgMusic = this.bgMusic;
+  this.sys.game.globals.bgMusic = this.bgMusic;
 };
 
 
@@ -261,7 +260,7 @@ export default class gameScene extends Phaser.Scene{
                 this.nextButton.on("pointerdown", function(){
                     
                     puzzleTex.destroy();
-                    _this.sys.config.globals.bgMusic.stop();
+                    _this.sys.game.globals.bgMusic.stop();
                     _this.model.bgMusicPlaying = false;
                     _this.cache.audio.remove('slide-snd');
                     

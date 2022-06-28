@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { config } from './config';
+var game = new Phaser.Game(config);
 import titleScene from './titleScene';
 import OptionsScene from '../src/OptionsScene';
 import Model from './Model';
@@ -6,8 +8,7 @@ import Ending from './ending';
 import CreditsScene from './credits';
 import playGame from './playGame';
 import playLevel from './playlevel';
-import { config } from './config';
-var game = new Phaser.Game(config);
+
 
 import gameScene from './gameScene';
 var gameOptions = {
