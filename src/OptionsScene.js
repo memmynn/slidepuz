@@ -16,12 +16,17 @@ preload(){
   this.load.image('sBox', 'src/assets/ui/slice_Button_133.png');
   this.load.image('mBox', 'src/assets/ui/slice_Button_132.png');
   this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
+  this.load.image('background', 'src/assets/ui/BG.png');
+
 };
 
   create () {
+    //this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#FF6666");
+    this.add.image(400, 300, "background");
+
     this.model = this.sys.game.globals.model;
 
-    this.text = this.add.text(300, 100, 'Options', { fontSize: 40 });
+    this.text = this.add.text(330, 60, 'OpTionS', {  fontFamily: 'cursive', fontSize: '38px', color: "white"});
     this.musicButton = this.add.image(400, 200, 'musicBox');
 
     this.soundButton = this.add.image(400, 300, 'soundBox');
