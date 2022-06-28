@@ -1,4 +1,13 @@
 import { config } from "./config";
+var gameOptions = {
+   colors: ["0xffffff"],
+   columns: 3,
+   rows: 4,
+   thumbWidth: config.width/9,
+   thumbHeight: config.height/7,
+   spacing: config.width/20,
+   localStorageName: "levelselect"
+}
 
 export default class gameScene extends Phaser.Scene{
     constructor(){
