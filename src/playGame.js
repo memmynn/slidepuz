@@ -22,6 +22,8 @@ export default class playGame extends Phaser.Scene{
         this.load.image("transp", "src/assets/transp.png");
         this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
         this.load.image('background', 'src/assets/ui/BG.png');
+        this.load.image('blueButton', 'src/assets/ui/Button_62.png');
+
 
 
     }
@@ -132,14 +134,15 @@ export default class playGame extends Phaser.Scene{
                 }
             }
         }, this);
-
-        this.menuButton = this.add.sprite(400, 500, 'blueButton1').setInteractive();
-    this.menuText = this.add.text(0, 0, 'Back', { fontSize: '32px', fill: '#000000' });
-    Phaser.Display.Align.In.Center(this.menuText, this.menuButton);
-
-    this.menuButton.on('pointerdown', function (pointer) {
-      this.scene.start('title');
-    }.bind(this));
+        this.return = this.add.sprite(400, 500, 'blueButton').
+        setScale(0.5)
+        .setInteractive({ useHandCursor: true });
+        
+    
+        this.return.on('pointerdown', function (pointer) {
+            this.scene.start("title");
+        }.bind(this));
+        
     
     
     this.model = this.sys.game.globals.model;

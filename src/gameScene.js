@@ -87,6 +87,9 @@ export default class gameScene extends Phaser.Scene{
         this.load.audio('snowfall-bgm', 'src/assets/snowfall.mp3');
         this.load.audio('slide-snd', slideSounds[this.level]);
         this.load.audio('noot-snd', 'src/assets/noot.mp3');
+        this.load.image('blueButton', 'src/assets/ui/Button_62.png');
+        this.load.image('blueButton3', 'src/assets/ui/Button_13.png');
+        this.load.image('optionsButton', 'src/assets/ui/Button_29.png');
 
        
     };
@@ -113,18 +116,29 @@ export default class gameScene extends Phaser.Scene{
    
       tileWidth = (config.width * 0.75) / gridSize;
       halfWidth = tileWidth * 0.5;
-   var returne = this.add.text(config.width * 0.78, config.height * 0.1, "Return back", {
-            font: "30px Arial",
-            color: "#ff0000"
-        });
-        returne.setInteractive();
-        returne.on("pointerdown", function(){
-            puzzleTex.destroy();
-            this.sys.game.globals.bgMusic.stop();
-            this.model.bgMusicPlaying = false;
-            this.cache.audio.remove('slide-snd');
+
+      this.returne = this.add.sprite(config.width * 0.88, config.height * 0.1, 'blueButton').
+    setScale(0.5)
+    .setInteractive({ useHandCursor: true });
+    
+
+    this.returne.on('pointerdown', function (pointer) {
+      puzzleTex.destroy();
+      this.sys.game.globals.bgMusic.stop();
+      this.model.bgMusicPlaying = false;
+      this.cache.audio.remove('slide-snd');
         this.scene.start("PlayGame");
-        }, this);
+    }.bind(this));
+
+    this.optionButton = this.add.sprite(config.width * 0.88, config.height * 0.30, 'optionsButton').
+    setScale(0.5).
+    setInteractive({ useHandCursor: true });
+    
+    this.optionButton.on('pointerdown', function (pointer) {
+        this.game.config.optionKey = this.scene.key;
+      this.scene.start('Options');
+    }.bind(this));
+   
 
               //store a list of shuffled tile numbers
       var tileFrames = shuffleGrid();

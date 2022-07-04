@@ -6,6 +6,10 @@ export default class playLevel extends Phaser.Scene{
     init(data){
         this.level = data.level;
         this.stars = data.stars;
+    };
+    preload(){
+        this.load.image('blueButton', 'src/assets/ui/Button_62.png');
+        
     }
     create(){
         this.add.image(400, 300, "background");
@@ -14,14 +18,16 @@ export default class playLevel extends Phaser.Scene{
             font: "32px Arial",
             color: "#ffffff"
         }).setOrigin(0.5);
-        var failLevel = this.add.text(20, 60, "Return back", {
-            font: "48px Arial",
-            color: "#ff0000"
-        });
-        failLevel.setInteractive();
-        failLevel.on("pointerdown", function(){
-            this.scene.start("PlayGame");
-        }, this);
+        
+        this.failLevel = this.add.sprite(400, 500, 'blueButton').
+    setScale(0.5)
+    .setInteractive({ useHandCursor: true });
+    
+
+    this.failLevel.on('pointerdown', function (pointer) {
+        this.scene.start("PlayGame");
+    }.bind(this));
+        
         var oneStarLevel = this.add.text(20, 160, "Get 1 star", {
             font: "48px Arial",
             color: "#ff8800"

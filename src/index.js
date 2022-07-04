@@ -11,15 +11,6 @@ import playLevel from './playlevel';
 
 
 import gameScene from './gameScene';
-var gameOptions = {
-   colors: ["0xffffff"],
-   columns: 3,
-   rows: 4,
-   thumbWidth: config.width/9,
-   thumbHeight: config.height/7,
-   spacing: config.width/20,
-   localStorageName: "levelselect"
-}
 
 // Our game Object
 
