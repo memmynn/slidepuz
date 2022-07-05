@@ -93,6 +93,8 @@ export default class gameScene extends Phaser.Scene{
         this.load.image('blueButton3', 'src/assets/ui/Button_13.png');
         this.load.image('optionsButton', 'src/assets/ui/Button_29.png');
         this.load.image('Button_15', 'src/assets/ui/Button_15.png');
+        this.load.image('spark', 'src/assets/particles/blue.png');
+
         
 
        
@@ -199,6 +201,17 @@ export default class gameScene extends Phaser.Scene{
         imge.setDisplaySize(_this.sys.canvas.width/1.33, _this.sys.canvas.height);
 
         
+        
+
+function em() {
+   var particles = _this.add.particles('spark');
+
+        var emitter = particles.createEmitter();
+        
+emitter.setPosition(300, 300);
+ emitter.setSpeed(200);
+ emitter.setBlendMode(Phaser.BlendModes.ADD);
+};
 
       this.input.on('gameobjectdown', tileClicked);
 
@@ -266,19 +279,20 @@ export default class gameScene extends Phaser.Scene{
                }
              }
              
-             
-  
-        _this.tweens.add({
-            targets: imge,
-            duration: 2000,
-            alpha: 1
-        });
-
-  
- _this.input.off('gameobjectdown');
-            
                //if we've made it this far the game has been won!
-               setTimeout(won, 3000);
+               _this.tweens.add({
+                  targets: imge,
+                  duration: 2000,
+                  alpha: 1
+              });
+      
+        
+        
+        setTimeout(em, 1700);
+      
+        
+       _this.input.off('gameobjectdown');
+               setTimeout(won, 4000);
                function won() {
                   
                   
@@ -299,11 +313,11 @@ export default class gameScene extends Phaser.Scene{
                      }
                  localStorage.setItem(gameOptions.localStorageName, _this.stars.toString());
 
-                _this.winButton = _this.add.sprite(330, 395, 'Button_15').setInteractive();
+                _this.winButton = _this.add.sprite(330, 500, 'Button_15')
                 _this.winText = _this.add.text(0, 0, 'WELL DONE!', {fontFamily: 'cursive', fontSize: '60px', fill: 'white' });
                 Phaser.Display.Align.In.Center(_this.winText, _this.winButton);
                 if(_this.level<11){
-                  _this.nextButton = _this.add.sprite(330, 85, 'Button_15').setInteractive();
+                  _this.nextButton = _this.add.sprite(330, 115, 'Button_15').setInteractive();
                   _this.nextText = _this.add.text(0, 0, 'NEXT LEVEL', {fontFamily: 'cursive', fontSize: '60px', fill: 'white' });
                   _this.nextButton.on("pointerdown", function(){
                     
