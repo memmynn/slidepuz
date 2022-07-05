@@ -52,7 +52,7 @@ preload(){
     
 
     this.menuButton.on('pointerdown', function (pointer) {
-      this.scene.start(this.game.config.optionKey);
+      this.scene.switch(this.game.config.optionKey);
     }.bind(this));
 
     this.updateAudio();

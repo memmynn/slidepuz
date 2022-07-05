@@ -81,6 +81,8 @@ export default class gameScene extends Phaser.Scene{
        
         //load in the complete puzzle image
         this.load.image('puzzle_bg', pictures[this.level]);
+        this.load.image('puzzle_bg1', pictures[this.level]);
+
         this.load.image('background', 'src/assets/ui/BG.png');
         
         //load in the slide sound effect, the background music, and the win sound
@@ -90,6 +92,8 @@ export default class gameScene extends Phaser.Scene{
         this.load.image('blueButton', 'src/assets/ui/Button_62.png');
         this.load.image('blueButton3', 'src/assets/ui/Button_13.png');
         this.load.image('optionsButton', 'src/assets/ui/Button_29.png');
+        this.load.image('Button_15', 'src/assets/ui/Button_15.png');
+        
 
        
     };
@@ -106,7 +110,7 @@ export default class gameScene extends Phaser.Scene{
 
     
     
-    let puzzleTex;
+    let puzzleTex, imge;
         puzzleTex = this.textures.get('puzzle_bg');
       let puzzleScale;
       puzzleScale = (config.width * 0.75) / puzzleTex.source[0].width;
@@ -124,6 +128,7 @@ export default class gameScene extends Phaser.Scene{
 
     this.returne.on('pointerdown', function (pointer) {
       puzzleTex.destroy();
+      this.textures.remove('puzzle_bg1');
       this.sys.game.globals.bgMusic.stop();
       this.model.bgMusicPlaying = false;
       this.cache.audio.remove('slide-snd');
@@ -136,7 +141,7 @@ export default class gameScene extends Phaser.Scene{
     
     this.optionButton.on('pointerdown', function (pointer) {
         this.game.config.optionKey = this.scene.key;
-      this.scene.start('Options');
+      this.scene.switch('Options');
     }.bind(this));
    
 
@@ -189,7 +194,11 @@ export default class gameScene extends Phaser.Scene{
   this.model.bgMusicPlaying = true;
   this.sys.game.globals.bgMusic = this.bgMusic;
 };
+ imge = _this.add.image(0, 0, 'puzzle_bg1').setOrigin(0,0);
+        imge.alpha = 0;
+        imge.setDisplaySize(_this.sys.canvas.width/1.33, _this.sys.canvas.height);
 
+        
 
       this.input.on('gameobjectdown', tileClicked);
 
@@ -257,8 +266,24 @@ export default class gameScene extends Phaser.Scene{
                }
              }
              
+             
+  
+        _this.tweens.add({
+            targets: imge,
+            duration: 2000,
+            alpha: 1
+        });
+
+  
+ _this.input.off('gameobjectdown');
+            
                //if we've made it this far the game has been won!
-               _this.input.off('gameobjectdown');
+               setTimeout(won, 3000);
+               function won() {
+                  
+                  
+               
+              
                if(this.bgMusic){
                this.bgMusic.stop()};
                if( !_this.noot.isPlaying && _this.model.soundOn === true ){
@@ -274,13 +299,13 @@ export default class gameScene extends Phaser.Scene{
                      }
                  localStorage.setItem(gameOptions.localStorageName, _this.stars.toString());
 
-                this.winButton = this.add.sprite(330, 395, 'blueButton1').setInteractive();
-                this.winText = this.add.text(0, 0, 'WELL DONE!', { fontSize: '100px', fill: '#000000' });
-                Phaser.Display.Align.In.Center(this.winText, this.winButton);
+                _this.winButton = _this.add.sprite(330, 395, 'Button_15').setInteractive();
+                _this.winText = _this.add.text(0, 0, 'WELL DONE!', {fontFamily: 'cursive', fontSize: '60px', fill: 'white' });
+                Phaser.Display.Align.In.Center(_this.winText, _this.winButton);
                 if(_this.level<11){
-                this.nextButton = this.add.sprite(330, 55, 'blueButton1').setInteractive();
-                this.nextText = this.add.text(0, 0, 'NEXT LEVEL', { fontSize: '75px', fill: '#000000' });
-                this.nextButton.on("pointerdown", function(){
+                  _this.nextButton = _this.add.sprite(330, 85, 'Button_15').setInteractive();
+                  _this.nextText = _this.add.text(0, 0, 'NEXT LEVEL', {fontFamily: 'cursive', fontSize: '60px', fill: 'white' });
+                  _this.nextButton.on("pointerdown", function(){
                     
                     puzzleTex.destroy();
                     _this.sys.game.globals.bgMusic.stop();
@@ -296,12 +321,12 @@ export default class gameScene extends Phaser.Scene{
                         
 
                 
-                }, this);
+                }, _this);
                 
     
-    Phaser.Display.Align.In.Center(this.nextText, this.nextButton);
+    Phaser.Display.Align.In.Center(_this.nextText, _this.nextButton);
 
-} else {_this.scene.start('ending')};
+} else {_this.scene.start('ending')}};
 };
         
          function slideTile(tile, newRow, newCol) {
