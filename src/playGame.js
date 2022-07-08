@@ -64,10 +64,11 @@ export default class playGame extends Phaser.Scene{
                     thumb.setTint(gameOptions.colors[k]);
                     thumb.levelNumber = k * (gameOptions.rows * gameOptions.columns) + j * gameOptions.columns + i;
                     thumb.setFrame(parseInt(this.stars[thumb.levelNumber]) + 1);
+                    
                     this.itemGroup.add(thumb);
                     var levelText = this.add.text(thumb.x, thumb.y - 12, thumb.levelNumber, {
                         font: "24px Arial",
-                        fill: "#000000"
+                        fill: "#FFFFFF"
                     });
                     levelText.setOrigin(0.5);
                     this.itemGroup.add(levelText);
@@ -113,6 +114,7 @@ export default class playGame extends Phaser.Scene{
                 this.itemGroup.children.iterate(function(item){
                     if(item.texture.key == "levelthumb"){
                         var boundingBox = item.getBounds();
+                        
                         if(Phaser.Geom.Rectangle.Contains(boundingBox, pointer.x, pointer.y) && item.frame.name > 0){
                             this.scene.start("PlayLevel", {
                                 level: item.levelNumber,

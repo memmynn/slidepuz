@@ -84,6 +84,7 @@ export default class gameScene extends Phaser.Scene{
         this.load.image('puzzle_bg1', pictures[this.level]);
 
         this.load.image('background', 'src/assets/ui/BG.png');
+        this.load.image('wellDone', 'src/assets/wellDone.png')
         
         //load in the slide sound effect, the background music, and the win sound
         this.load.audio('snowfall-bgm', 'src/assets/snowfall.mp3');
@@ -174,7 +175,7 @@ export default class gameScene extends Phaser.Scene{
   
               //scale the image and tell it to receive input events
               tile.setScale(puzzleScale);
-              tile.setInteractive();
+              tile.setInteractive({ useHandCursor: true });
   
               row.push(tile);
            } else {
@@ -280,6 +281,13 @@ emitter.setPosition(300, 300);
              }
              
                //if we've made it this far the game has been won!
+               if(_this.bgMusic){
+                  _this.bgMusic.stop()};
+                  if( !_this.noot.isPlaying && _this.model.soundOn === true ){
+                   
+                   _this.noot.play();
+                  };
+
                _this.tweens.add({
                   targets: imge,
                   duration: 2000,
@@ -287,23 +295,24 @@ emitter.setPosition(300, 300);
               });
       
         
-        
+              _this.wellDone = _this.add.image(150, 200, 'wellDone').setOrigin(0,0);
+              _this.wellDone.alpha = 0;
+              _this.tweens.add({
+                targets: _this.wellDone,
+                duration: 1000,
+                alpha: 1
+            });
         setTimeout(em, 1700);
       
         
        _this.input.off('gameobjectdown');
-               setTimeout(won, 4000);
+               setTimeout(won, 3000);
                function won() {
                   
                   
                
               
-               if(this.bgMusic){
-               this.bgMusic.stop()};
-               if( !_this.noot.isPlaying && _this.model.soundOn === true ){
-                
-                _this.noot.play();
-               };
+              
                if( _this.starCount === 3) {
                 _this.stars[_this.level] = 3;
                  } else {_this.stars[_this.level] = Math.max(_this.stars[_this.level], _this.starCount);}
@@ -313,15 +322,14 @@ emitter.setPosition(300, 300);
                      }
                  localStorage.setItem(gameOptions.localStorageName, _this.stars.toString());
 
-                _this.winButton = _this.add.sprite(330, 500, 'Button_15')
-                _this.winText = _this.add.text(0, 0, 'WELL DONE!', {fontFamily: 'cursive', fontSize: '60px', fill: 'white' });
-                Phaser.Display.Align.In.Center(_this.winText, _this.winButton);
+                
                 if(_this.level<11){
-                  _this.nextButton = _this.add.sprite(330, 115, 'Button_15').setInteractive();
+                  _this.nextButton = _this.add.sprite(330, 115, 'Button_15').setInteractive({ useHandCursor: true });
                   _this.nextText = _this.add.text(0, 0, 'NEXT LEVEL', {fontFamily: 'cursive', fontSize: '60px', fill: 'white' });
                   _this.nextButton.on("pointerdown", function(){
                     
                     puzzleTex.destroy();
+                    this.textures.remove('puzzle_bg1');
                     _this.sys.game.globals.bgMusic.stop();
                     _this.model.bgMusicPlaying = false;
                     _this.cache.audio.remove('slide-snd');
