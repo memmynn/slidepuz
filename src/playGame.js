@@ -47,7 +47,7 @@ export default class playGame extends Phaser.Scene{
             align: "center"
         });
         this.pageText.setOrigin(0.5);
-        this.scrollingMap = this.add.tileSprite(0, 0, gameOptions.colors.length * config.width, config.height, "transp");
+        this.scrollingMap = this.add.tileSprite(0, 0, gameOptions.colors.length * config.width, config.height, "background");
         this.scrollingMap.setInteractive();
         this.input.setDraggable(this.scrollingMap);
         this.scrollingMap.setOrigin(0, 0);
@@ -120,64 +120,19 @@ export default class playGame extends Phaser.Scene{
                     stars: _this.stars
                 })}
             },this)
+            .on('pointerover', () => item.setTint(0x00FCFC).setScale(1.05) )
+            .on('pointerout', () => item.clearTint().setScale(1) )
         }});
         
         
         
        
 
-        /*this.input.on("pointerover", function(pointer, gameObject){
-            this.canMove = false;
-            //var delta = gameObject.startPosition - gameObject.x;
-            //if(delta == 0){
-                this.canMove = true;
-                this.itemGroup.children.iterate(function(item){
-                    if(item.texture.key == "levelthumb"){
-                        var boundingBox = item.getBounds();
-                        
-                        if(Phaser.Geom.Rectangle.Contains(boundingBox, pointer.x, pointer.y) && item.frame.name > 0){
-                            _this.scene.start("PlayLevel", {
-                                level: item.levelNumber,
-                                stars: _this.stars
-                            });
-                        }
-                    }
-                }, this);
-            }, this);
-
-        /*this.input.on("pointerdown", function(pointer, gameObject){
-            this.canMove = false;
-            //var delta = gameObject.startPosition - gameObject.x;
-            //if(delta == 0){
-                this.canMove = true;
-                this.itemGroup.children.iterate(function(item){
-                    if(item.texture.key == "levelthumb"){
-                        var boundingBox = item.getBounds();
-                        
-                        if(Phaser.Geom.Rectangle.Contains(boundingBox, pointer.x, pointer.y) && item.frame.name > 0){
-                            this.scene.start("PlayLevel", {
-                                level: item.levelNumber,
-                                stars: this.stars
-                            });
-                        }
-                    }
-                }, this);
-            }
-           /*if(delta > config.width / 8){
-                this.changePage(1);
-            }
-            else{
-                if(delta < -config.width / 8){
-                    this.changePage(-1);
-                }
-                else{
-                    this.changePage(0);
-                }
-            }
-        }, this);*/
-        this.return = this.add.sprite(400, 500, 'blueButton').
+   
+        this.return = this.add.sprite(700, 500, 'blueButton').
         setScale(0.5)
-        .setInteractive({ useHandCursor: true });
+        .setInteractive({ useHandCursor: true }).on('pointerover', () => this.return.setTint(0xFFE888).setScale(0.55) )
+        .on('pointerout', () => this.return.clearTint().setScale(0.5) );
         
     
         this.return.on('pointerdown', function (pointer) {

@@ -9,6 +9,11 @@ export default class CreditsScene extends Phaser.Scene {
     }
     create () {
         this.add.image(400, 300, "background");
+      this.input.on("pointerdown", function () {
+        this.madeByTween.destroy;
+        this.scene.start('title');
+      }.bind(this))
+
 
       this.creditsText = this.add.text(0, 0, 'Credits', { fontSize: '32px', fill: '#fff' });
       this.madeByText = this.add.text(0, 0, 'Created By: Mehmet Emin Uyar', { fontSize: '45px', fill: '#fff' });

@@ -32,9 +32,11 @@ preload(){
     this.soundButton = this.add.image(400, 300, 'soundBox');
 
     this.musicButton.    setScale(0.5).
-    setInteractive({ useHandCursor: true });
+    setInteractive({ useHandCursor: true }).on('pointerover', () => this.musicButton.setTint(0xFFE888).setScale(0.55) )
+    .on('pointerout', () => this.musicButton.clearTint().setScale(0.5) );
     this.soundButton.    setScale(0.5).
-    setInteractive({ useHandCursor: true });
+    setInteractive({ useHandCursor: true }).on('pointerover', () => this.soundButton.setTint(0xFFE888).setScale(0.55) )
+    .on('pointerout', () => this.soundButton.clearTint().setScale(0.5) );
 
     this.musicButton.on('pointerdown', function () {
       this.model.musicOn = !this.model.musicOn;
@@ -48,7 +50,8 @@ preload(){
 
     this.menuButton = this.add.sprite(400, 500, 'blueButton').
     setScale(0.5)
-    .setInteractive({ useHandCursor: true });
+    .setInteractive({ useHandCursor: true }).on('pointerover', () => this.menuButton.setTint(0xFFE888).setScale(0.55) )
+    .on('pointerout', () => this.menuButton.clearTint().setScale(0.5) );
     
 
     this.menuButton.on('pointerdown', function (pointer) {

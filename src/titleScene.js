@@ -30,6 +30,8 @@ create() {
     //bg.setOrigin(0,0);
     this.startButton = this.add.sprite(400, 400, 'blueButton3').setScale(0.37).
     setInteractive({ useHandCursor: true });
+    this.startButton.on('pointerover', () => this.startButton.setTint(0xFFE888).setScale(0.4) )
+    .on('pointerout', () => this.startButton.clearTint().setScale(0.37) )
 
    this.text = this.add.text(300, 350, 'sTaRt!', {  fontFamily: 'cursive', fontSize: '38px', color: "white"});
     var _this = this;
@@ -43,7 +45,9 @@ function clickButton() {
 
     this.optionButton = this.add.sprite(400, 475, 'blueButton3').
     setScale(0.37).
-    setInteractive({ useHandCursor: true });
+    setInteractive({ useHandCursor: true })
+    .on('pointerover', () => this.optionButton.setTint(0xFFE888).setScale(0.4) )
+    .on('pointerout', () => this.optionButton.clearTint().setScale(0.37) );
     this.optionText = this.add.text(0, 0, 'oPtiOns', {  fontFamily: 'cursive', fontSize: '38px', color: "white"});
     Phaser.Display.Align.In.Center(this.optionText, this.optionButton);
 
@@ -53,7 +57,10 @@ function clickButton() {
     }.bind(this));
 
     this.creditsButton = this.add.sprite(400, 550, 'blueButton3').setScale(0.37).
-    setInteractive({ useHandCursor: true });
+    setInteractive({ useHandCursor: true })
+    .on('pointerover', () => this.creditsButton.setTint(0xFFE888).setScale(0.4) )
+    .on('pointerout', () => this.creditsButton.clearTint().setScale(0.37) )
+    ;
     this.creditsText = this.add.text(0, 0, 'cReditS', {  fontFamily: 'cursive', fontSize: '38px', color: "white"});
     Phaser.Display.Align.In.Center(this.creditsText, this.creditsButton);
 

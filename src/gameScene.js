@@ -126,7 +126,8 @@ export default class gameScene extends Phaser.Scene{
 
       this.returne = this.add.sprite(config.width * 0.88, config.height * 0.1, 'blueButton').
     setScale(0.5)
-    .setInteractive({ useHandCursor: true });
+    .setInteractive({ useHandCursor: true }).on('pointerover', () => this.returne.setTint(0xFFE888).setScale(0.55) )
+    .on('pointerout', () => this.returne.clearTint().setScale(0.5) );
     
 
     this.returne.on('pointerdown', function (pointer) {
@@ -140,7 +141,8 @@ export default class gameScene extends Phaser.Scene{
 
     this.optionButton = this.add.sprite(config.width * 0.88, config.height * 0.30, 'optionsButton').
     setScale(0.5).
-    setInteractive({ useHandCursor: true });
+    setInteractive({ useHandCursor: true }).on('pointerover', () => this.optionButton.setTint(0xFFE888).setScale(0.55) )
+    .on('pointerout', () => this.optionButton.clearTint().setScale(0.5) );
     
     this.optionButton.on('pointerdown', function (pointer) {
         this.game.config.optionKey = this.scene.key;
@@ -324,12 +326,11 @@ emitter.setPosition(300, 300);
 
                 
                 if(_this.level<11){
-                  _this.nextButton = _this.add.sprite(330, 115, 'Button_15').setInteractive({ useHandCursor: true });
-                  _this.nextText = _this.add.text(0, 0, 'NEXT LEVEL', {fontFamily: 'cursive', fontSize: '60px', fill: 'white' });
+                  _this.nextButton = _this.add.sprite(330, 115, 'Button_15').setInteractive({ useHandCursor: true })
                   _this.nextButton.on("pointerdown", function(){
                     
                     puzzleTex.destroy();
-                    this.textures.remove('puzzle_bg1');
+                    _this.textures.remove('puzzle_bg1');
                     _this.sys.game.globals.bgMusic.stop();
                     _this.model.bgMusicPlaying = false;
                     _this.cache.audio.remove('slide-snd');
@@ -345,8 +346,11 @@ emitter.setPosition(300, 300);
                 
                 }, _this);
                 
-    
+                _this.nextText = _this.add.text(0, 0, 'NEXT LEVEL', {fontFamily: 'cursive', fontSize: '60px', fill: 'white' });
+    _this.nextButton.on('pointerover', () => _this.nextButton.setTint(0xFFE888).setScale(1.05) )
+    .on('pointerout', () => _this.nextButton.clearTint().setScale(1) );
     Phaser.Display.Align.In.Center(_this.nextText, _this.nextButton);
+    
 
 } else {_this.scene.start('ending')}};
 };

@@ -19,7 +19,7 @@ export default class playLevel extends Phaser.Scene{
             color: "#ffffff"
         }).setOrigin(0.5);
         
-        this.failLevel = this.add.sprite(400, 500, 'blueButton').
+        this.failLevel = this.add.sprite(700, 500, 'blueButton').
     setScale(0.5)
     .setInteractive({ useHandCursor: true });
     

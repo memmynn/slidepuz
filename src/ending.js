@@ -30,6 +30,9 @@ export default class Ending extends Phaser.Scene
 
     create ()
     {
+        this.input.on("pointerdown", function () {
+            this.scene.start('title');
+          }.bind(this))
         this.bgMusic = this.sound.add('backGM', { volume: 0.3, loop: true });
   this.bgMusic.play();
         var pictures = [];
