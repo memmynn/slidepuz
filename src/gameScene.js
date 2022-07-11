@@ -95,6 +95,7 @@ export default class gameScene extends Phaser.Scene{
         this.load.image('optionsButton', 'src/assets/ui/Button_29.png');
         this.load.image('Button_15', 'src/assets/ui/Button_15.png');
         this.load.image('spark', 'src/assets/particles/blue.png');
+        this.load.image('replay', 'src/assets/ui/replay.png');
 
         
 
@@ -148,8 +149,16 @@ export default class gameScene extends Phaser.Scene{
         this.game.config.optionKey = this.scene.key;
       this.scene.switch('Options');
     }.bind(this));
-   
-
+ 
+    this.replayButton = this.add.sprite(config.width * 0.88, config.height * 0.50, 'replay').
+    setScale(0.5).
+    setInteractive({ useHandCursor: true }).on('pointerover', () => this.replayButton.setTint(0xFFE888).setScale(0.55) )
+    .on('pointerout', () => this.replayButton.clearTint().setScale(0.5) );
+    
+    this.replayButton.on('pointerdown', function (pointer) {
+        
+      this.scene.restart();
+    }.bind(this));
               //store a list of shuffled tile numbers
       var tileFrames = shuffleGrid();
       

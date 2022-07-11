@@ -38,7 +38,7 @@ export default class playLevel extends Phaser.Scene{
 
         var oneStarLevel = this.add.text(-150, -10, "Get ", {  fontFamily: 'cursive', fontSize: '58px', color: "white", stroke: '#D08B8B', strokeThickness: 5,
         shadow: { color: '#A98E8E', fill: true, offsetX: -5, offsetY: -5, blur: 1 }})
-        var container = this.add.container(200, 150, [ star, oneStarLevel ]);
+        var container = this.add.container(400, 150, [ star, oneStarLevel ]);
         container.setSize(star.width, star.height);
 
 
@@ -58,7 +58,7 @@ export default class playLevel extends Phaser.Scene{
         
         var twoStarLevel = this.add.text(-150, -10, "Get ", {  fontFamily: 'cursive', fontSize: '58px', color: "white", stroke: '#D08B8B', strokeThickness: 5,
         shadow: { color: '#A98E8E', fill: true, offsetX: -5, offsetY: -5, blur: 1 }})
-        var container2 = this.add.container(200, 300, [ star1, star2, twoStarLevel ]);
+        var container2 = this.add.container(400, 300, [ star1, star2, twoStarLevel ]);
         container2.setSize(star1.width, star1.height);
 
 
@@ -78,7 +78,7 @@ export default class playLevel extends Phaser.Scene{
         
         var threeStarLevel = this.add.text(-150, -10, "Get ", {  fontFamily: 'cursive', fontSize: '58px', color: "white", stroke: '#D08B8B', strokeThickness: 5,
         shadow: { color: '#A98E8E', fill: true, offsetX: -5, offsetY: -5, blur: 1 }})
-        var container3 = this.add.container(200, 450, [ star3, star4, star5, threeStarLevel ]);
+        var container3 = this.add.container(400, 450, [ star3, star4, star5, threeStarLevel ]);
         container3.setSize(star1.width, star1.height);
 
 
