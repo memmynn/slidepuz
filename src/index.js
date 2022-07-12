@@ -42,4 +42,4 @@ game.scene.add("Credits", CreditsScene);
 game.scene.add("ending", Ending);
 
 // Start the title scene
-game.scene.start('ending');
+game.scene.start('title');

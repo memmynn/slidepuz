@@ -30,20 +30,23 @@ export default class Ending extends Phaser.Scene
 
     create ()
     {
+        this.model = this.sys.game.globals.model;
+        if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+            this.bgMusic = this.sound.add('backGM', { volume: 0.5, loop: true });
+          this.bgMusic.play();
+          this.model.bgMusicPlaying = true;
+          this.sys.game.globals.bgMusic = this.bgMusic;
+        };
+        
         let _this = this
         this.input.on("pointerdown", function () {
             this.sys.game.globals.bgMusic.stop();
       this.model.bgMusicPlaying = false;
       this.cache.audio.remove('slide-snd');
             this.scene.start('title');
-          }.bind(this))
-        this.model = this.sys.game.globals.model;
-        if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
-            this.bgMusic = this.sound.add('backGM', { volume: 0.3, loop: true });
-            this.bgMusic.play();
-      this.model.bgMusicPlaying = true;
-      this.sys.game.globals.bgMusic = this.bgMusic;
-    };
+          }.bind(this));
+
+          
         var pictures = [];
 
         for ( var pic=0; pic < 12; pic++) {

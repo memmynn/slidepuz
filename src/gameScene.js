@@ -361,7 +361,9 @@ emitter.setPosition(300, 300);
     Phaser.Display.Align.In.Center(_this.nextText, _this.nextButton);
     
 
-} else {_this.scene.start('ending')}};
+} else {
+   _this.model.bgMusicPlaying = false;
+   _this.scene.start('ending')}};
 };
         
          function slideTile(tile, newRow, newCol) {
