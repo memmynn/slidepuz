@@ -129,7 +129,7 @@ export default class playGame extends Phaser.Scene{
        
 
    
-        this.return = this.add.sprite(700, 500, 'blueButton').
+        this.return = this.add.sprite(config.width * 0.88, config.height * 0.53, 'blueButton').
         setScale(0.5)
         .setInteractive({ useHandCursor: true }).on('pointerover', () => this.return.setTint(0xFFE888).setScale(0.55) )
         .on('pointerout', () => this.return.clearTint().setScale(0.5) );

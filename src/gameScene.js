@@ -125,7 +125,7 @@ export default class gameScene extends Phaser.Scene{
       tileWidth = (config.width * 0.75) / gridSize;
       halfWidth = tileWidth * 0.5;
 
-      this.returne = this.add.sprite(config.width * 0.88, config.height * 0.1, 'blueButton').
+      this.returne = this.add.sprite(config.width * 0.88, config.height * 0.33, 'blueButton').
     setScale(0.5)
     .setInteractive({ useHandCursor: true }).on('pointerover', () => this.returne.setTint(0xFFE888).setScale(0.55) )
     .on('pointerout', () => this.returne.clearTint().setScale(0.5) );
@@ -140,7 +140,7 @@ export default class gameScene extends Phaser.Scene{
         this.scene.start("PlayGame");
     }.bind(this));
 
-    this.optionButton = this.add.sprite(config.width * 0.88, config.height * 0.30, 'optionsButton').
+    this.optionButton = this.add.sprite(config.width * 0.88, config.height * 0.53, 'optionsButton').
     setScale(0.5).
     setInteractive({ useHandCursor: true }).on('pointerover', () => this.optionButton.setTint(0xFFE888).setScale(0.55) )
     .on('pointerout', () => this.optionButton.clearTint().setScale(0.5) );
@@ -150,7 +150,7 @@ export default class gameScene extends Phaser.Scene{
       this.scene.switch('Options');
     }.bind(this));
  
-    this.replayButton = this.add.sprite(config.width * 0.88, config.height * 0.50, 'replay').
+    this.replayButton = this.add.sprite(config.width * 0.88, config.height * 0.73, 'replay').
     setScale(0.5).
     setInteractive({ useHandCursor: true }).on('pointerover', () => this.replayButton.setTint(0xFFE888).setScale(0.55) )
     .on('pointerout', () => this.replayButton.clearTint().setScale(0.5) );
@@ -391,9 +391,9 @@ emitter.setPosition(300, 300);
             }
          };
     
-         var r3 = this.add.rectangle((config.width * 0.75)/2, (config.width * 0.75)/2, config.width * 0.76 , config.width * 0.76);
+         //var r3 = this.add.rectangle((config.width * 0.75)/2, (config.width * 0.75)/2, config.width * 0.76 , config.width * 0.76);
 
-         r3.setStrokeStyle(12, 0x1a65ac);
+         //r3.setStrokeStyle(15, 0x1a65ac);
    
     }
     
