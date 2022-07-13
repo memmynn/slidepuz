@@ -103,7 +103,7 @@ export default class gameScene extends Phaser.Scene{
     };
     
     create () {
-        this.add.image(400, 300, "background");
+        this.add.image(400, 300, "background").setScale(0.5);
 
         let tileWidth, halfWidth;  //the width of each tile in pixels (and half that, since the origin of each tile is the centerpoint)
 

@@ -5,7 +5,7 @@ export default class titleScene extends Phaser.Scene{
 }
 
 preload () {
-    this.load.image('background0', 'src/assets/ui/bg0.png');
+    this.load.image('background0', 'src/assets/ui/BG.png');
 
     //this.load.image('logo', require('./assets/logo.png'));
     // load assets needed in our game

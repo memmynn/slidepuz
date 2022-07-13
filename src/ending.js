@@ -50,7 +50,7 @@ export default class Ending extends Phaser.Scene
         var pictures = [];
 
         for ( var pic=0; pic < 12; pic++) {
-            let picture = this.add.image(50, 50, `${pic}`).setAlpha(0);
+            let picture = this.add.image(50, 50, `${pic}`).setAlpha(0).setInteractive({ useHandCursor: true});
         pictures.push(picture);
         };
 
