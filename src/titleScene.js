@@ -16,10 +16,11 @@ preload () {
   this.load.image('box', 'src/assets/ui/grey_box.png');
   this.load.image('checkedBox', 'src/assets/ui/blue_boxCheckmark.png');
   this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
-  
+  this.load.audio('buttonSound', 'src/assets/ui/Coffee1.mp3');
+
 }
 create() {
-
+this.buttonsound = this.sound.add("buttonSound")
     this.add.image(400, 300, "background0");
     const x = this.scale.width * 0.5;
 		const y = this.scale.height * 0.25;
@@ -38,6 +39,8 @@ create() {
     Phaser.Display.Align.In.Center(this.text, this.startButton);
     this.startButton.on('pointerdown', () => clickButton());
 function clickButton() {
+  if (_this.model.soundOn === true ) {
+    _this.sound.play('buttonSound')}
         _this.scene.start('PlayGame');
     }
     
@@ -52,6 +55,9 @@ function clickButton() {
     Phaser.Display.Align.In.Center(this.optionText, this.optionButton);
 
     this.optionButton.on('pointerdown', function (pointer) {
+      //play the tile slide sound
+      if (_this.model.soundOn === true ) {
+        this.sound.play('buttonSound')}
         this.game.config.optionKey = this.scene.key;
       this.scene.start('Options');
     }.bind(this));
@@ -65,7 +71,8 @@ function clickButton() {
     Phaser.Display.Align.In.Center(this.creditsText, this.creditsButton);
 
     this.creditsButton.on('pointerdown', function (pointer) {
-        
+      if (_this.model.soundOn === true ) {
+        this.sound.play('buttonSound')}
       this.scene.start('Credits');
     }.bind(this));
 

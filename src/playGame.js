@@ -28,6 +28,8 @@ export default class playGame extends Phaser.Scene{
 
     }
     create(){
+        this.buttonsound = this.sound.add("buttonSound")
+
         this.add.image(400, 300, "background");
 
         let _this = this;
@@ -114,6 +116,8 @@ export default class playGame extends Phaser.Scene{
                 item.setInteractive({useHandCursor:true})
                 item.on('pointerdown', 
                 function (pointer) {
+                    if (_this.model.soundOn === true ) {
+                        _this.sound.play('buttonSound')}
                     if( item.frame.name > 0){
                     _this.scene.start("PlayLevel", {
                     level: item.levelNumber,
@@ -136,6 +140,8 @@ export default class playGame extends Phaser.Scene{
         
     
         this.return.on('pointerdown', function (pointer) {
+            if (_this.model.soundOn === true ) {
+                _this.sound.play('buttonSound')}
             this.scene.start("title");
         }.bind(this));
         

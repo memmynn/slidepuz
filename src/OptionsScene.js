@@ -21,8 +21,10 @@ preload(){
 };
 
   create () {
+    var _this = this;
     //this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#FF6666");
     this.add.image(400, 300, "background");
+    this.buttonsound = this.sound.add("buttonSound")
 
     this.model = this.sys.game.globals.model;
 
@@ -39,11 +41,16 @@ preload(){
     .on('pointerout', () => this.soundButton.clearTint().setScale(0.5) );
 
     this.musicButton.on('pointerdown', function () {
+      if (_this.model.soundOn === true ) {
+        this.sound.play('buttonSound')}
+      
       this.model.musicOn = !this.model.musicOn;
       this.updateAudio();
     }.bind(this));
 
     this.soundButton.on('pointerdown', function () {
+      if (_this.model.soundOn === true ) {
+        this.sound.play('buttonSound')}
       this.model.soundOn = !this.model.soundOn;
       this.updateAudio();
     }.bind(this));
@@ -55,6 +62,8 @@ preload(){
     
 
     this.menuButton.on('pointerdown', function (pointer) {
+      if (_this.model.soundOn === true ) {
+        this.sound.play('buttonSound')}
       this.scene.switch(this.game.config.optionKey);
     }.bind(this));
 

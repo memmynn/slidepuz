@@ -13,6 +13,9 @@ export default class playLevel extends Phaser.Scene{
         
     }
     create(){
+        var _this = this;
+        this.buttonsound = this.sound.add("buttonSound")
+
         this.add.image(400, 300, "background");
 
         this.add.text(config.width / 2, 20, "Play level " + this.level.toString(), {
@@ -27,6 +30,8 @@ export default class playLevel extends Phaser.Scene{
     
 
     this.failLevel.on('pointerdown', function (pointer) {
+        if (_this.model.soundOn === true ) {
+            _this.sound.play('buttonSound')}
         this.scene.start("PlayGame");
     }.bind(this));
     var star = this.add.image(0, 0, 'star');
@@ -45,6 +50,8 @@ export default class playLevel extends Phaser.Scene{
         container.setInteractive({ useHandCursor: true }).on('pointerover', () => {star.setTint(0xFFE888).setScale(1.3); oneStarLevel.setScale(1.3) })
         .on('pointerout', () => { star.clearTint().setScale(1); oneStarLevel.setScale(1) });
         container.on("pointerdown", function(){
+            if (_this.model.soundOn === true ) {
+                this.sound.play('buttonSound')}
             this.sys.game.globals.bgMusic.stop();
             this.model.bgMusicPlaying = false;
             this.scene.start("GameScene", {
@@ -65,6 +72,8 @@ export default class playLevel extends Phaser.Scene{
         container2.setInteractive({ useHandCursor: true }).on('pointerover', () => {star2.setTint(0xFFE888).setScale(1.3);star1.setTint(0xFFE888).setScale(1.3); twoStarLevel.setScale(1.3) })
         .on('pointerout', () => { star1.clearTint().setScale(1);star2.clearTint().setScale(1); twoStarLevel.setScale(1) });
         container2.on("pointerdown", function(){
+            if (_this.model.soundOn === true ) {
+                this.sound.play('buttonSound')}
             this.sys.game.globals.bgMusic.stop();
             this.model.bgMusicPlaying = false;
             this.scene.start("GameScene", {
@@ -85,6 +94,8 @@ export default class playLevel extends Phaser.Scene{
         container3.setInteractive({ useHandCursor: true }).on('pointerover', () => {star3.setTint(0xFFE888).setScale(1.3);star4.setTint(0xFFE888).setScale(1.3);star5.setTint(0xFFE888).setScale(1.3); threeStarLevel.setScale(1.3) })
         .on('pointerout', () => { star3.clearTint().setScale(1);star4.clearTint().setScale(1); star5.clearTint().setScale(1);threeStarLevel.setScale(1) });
         container3.on("pointerdown", function(){
+            if (_this.model.soundOn === true ) {
+                this.sound.play('buttonSound')}
             this.sys.game.globals.bgMusic.stop();
             this.model.bgMusicPlaying = false;
             this.scene.start("GameScene", {

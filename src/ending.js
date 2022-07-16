@@ -30,6 +30,8 @@ export default class Ending extends Phaser.Scene
 
     create ()
     {
+        this.buttonsound = this.sound.add("buttonSound")
+
         this.model = this.sys.game.globals.model;
         if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
             this.bgMusic = this.sound.add('backGM', { volume: 0.5, loop: true });
@@ -40,6 +42,8 @@ export default class Ending extends Phaser.Scene
         
         let _this = this
         this.input.on("pointerdown", function () {
+            if (_this.model.soundOn === true ) {
+                this.sound.play('buttonSound')}
             this.sys.game.globals.bgMusic.stop();
       this.model.bgMusicPlaying = false;
       this.cache.audio.remove('slide-snd');

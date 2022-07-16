@@ -103,6 +103,8 @@ export default class gameScene extends Phaser.Scene{
     };
     
     create () {
+      this.buttonsound = this.sound.add("buttonSound")
+
         this.add.image(400, 300, "background").setScale(0.5);
 
         let tileWidth, halfWidth;  //the width of each tile in pixels (and half that, since the origin of each tile is the centerpoint)
@@ -132,6 +134,8 @@ export default class gameScene extends Phaser.Scene{
     
 
     this.returne.on('pointerdown', function (pointer) {
+      if (_this.model.soundOn === true ) {
+         this.sound.play('buttonSound')}
       puzzleTex.destroy();
       this.textures.remove('puzzle_bg1');
       this.sys.game.globals.bgMusic.stop();
@@ -146,6 +150,8 @@ export default class gameScene extends Phaser.Scene{
     .on('pointerout', () => this.optionButton.clearTint().setScale(0.5) );
     
     this.optionButton.on('pointerdown', function (pointer) {
+      if (_this.model.soundOn === true ) {
+         this.sound.play('buttonSound')}
         this.game.config.optionKey = this.scene.key;
       this.scene.switch('Options');
     }.bind(this));
@@ -156,7 +162,8 @@ export default class gameScene extends Phaser.Scene{
     .on('pointerout', () => this.replayButton.clearTint().setScale(0.5) );
     
     this.replayButton.on('pointerdown', function (pointer) {
-        
+      if (_this.model.soundOn === true ) {
+         this.sound.play('buttonSound')}        
       this.scene.restart();
     }.bind(this));
               //store a list of shuffled tile numbers
@@ -337,7 +344,8 @@ emitter.setPosition(300, 300);
                 if(_this.level<11){
                   _this.nextButton = _this.add.sprite(330, 115, 'Button_15').setInteractive({ useHandCursor: true })
                   _this.nextButton.on("pointerdown", function(){
-                    
+                     if (_this.model.soundOn === true ) {
+                        _this.sound.play('buttonSound')}
                     puzzleTex.destroy();
                     _this.textures.remove('puzzle_bg1');
                     _this.sys.game.globals.bgMusic.stop();

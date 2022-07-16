@@ -8,8 +8,12 @@ export default class CreditsScene extends Phaser.Scene {
         this.load.image('background', 'src/assets/ui/BG.png');
     }
     create () {
+      this.buttonsound = this.sound.add("buttonSound")
+
         this.add.image(400, 300, "background");
       this.input.on("pointerdown", function () {
+        if (_this.model.soundOn === true ) {
+          this.sound.play('buttonSound')}
         this.madeByTween.destroy;
         this.scene.start('title');
       }.bind(this))
