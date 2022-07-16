@@ -25,7 +25,8 @@ export default class Ending extends Phaser.Scene
         for (var pic in pictures){
             this.load.image(`${pic}`, pictures[pic]);
         };
-        this.load.audio('backGM', 'src/assets/POL-go-time-short.wav');
+        this.load.audio('buttonSound', 'src/assets/ui/Coffee1.mp3');
+        this.load.audio('backGM', 'src/assets/creativeminds.mp3');
     }
 
     create ()
