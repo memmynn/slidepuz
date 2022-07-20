@@ -5,7 +5,7 @@ export default class CreditsScene extends Phaser.Scene {
     }
   
     preload() {
-        this.load.image('background', 'src/assets/ui/BG.png');
+        this.load.image('background', '../src/assets/ui/BG.png');
     }
     create () {
       var _this = this;

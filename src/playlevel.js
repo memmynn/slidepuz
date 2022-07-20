@@ -8,8 +8,8 @@ export default class playLevel extends Phaser.Scene{
         this.stars = data.stars;
     };
     preload(){
-        this.load.image('blueButton', 'src/assets/ui/Button_62.png');
-        this.load.image('star', 'src/assets/ui/star.png');
+        this.load.image('blueButton', '../src/assets/ui/Button_62.png');
+        this.load.image('star', '../src/assets/ui/star.png');
         
     }
     create(){

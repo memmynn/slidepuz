@@ -8,25 +8,25 @@ export default class Ending extends Phaser.Scene
     preload ()
     {
         const pictures = [
-            'src/assets/pingu-puzzle.png',
-            'src/assets/karinna-hotel-uludag-genel_86791.jpg',
-            'src/assets/white-Snowhotel-Norway-Ski-Shop-Log-Cabin-Kirkenes-2144793.jpg',
-            'src/assets/grass.jpg',
-            'src/assets/flowers.jpg',
-            'src/assets/bicycle.jpg',
-            'src/assets/summer1.jpg',
-            'src/assets/summer2.jpg',
-            'src/assets/summer3.jpg',
-            'src/assets/autumn1.jpg',
-            'src/assets/autumn2.jpg',
-            'src/assets/autumn3.jpg',
+            '../src/assets/pingu-puzzle.png',
+            '../src/assets/karinna-hotel-uludag-genel_86791.jpg',
+            '../src/assets/white-Snowhotel-Norway-Ski-Shop-Log-Cabin-Kirkenes-2144793.jpg',
+            '../src/assets/grass.jpg',
+            '../src/assets/flowers.jpg',
+            '../src/assets/bicycle.jpg',
+            '../src/assets/summer1.jpg',
+            '../src/assets/summer2.jpg',
+            '../src/assets/summer3.jpg',
+            '../src/assets/autumn1.jpg',
+            '../src/assets/autumn2.jpg',
+            '../src/assets/autumn3.jpg',
           ];
         
         for (var pic in pictures){
             this.load.image(`${pic}`, pictures[pic]);
         };
-        this.load.audio('buttonSound', 'src/assets/ui/Coffee1.mp3');
-        this.load.audio('backGM', 'src/assets/creativeminds.mp3');
+        this.load.audio('buttonSound', '../src/assets/ui/Coffee1.mp3');
+        this.load.audio('backGM', '../src/assets/creativeminds.mp3');
     }
 
     create ()

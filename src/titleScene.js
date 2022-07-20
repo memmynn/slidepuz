@@ -5,20 +5,20 @@ export default class titleScene extends Phaser.Scene{
 }
 
 preload () {
-    this.load.image('background0', 'src/assets/ui/BG.png');
+    this.load.image('background0', '../src/assets/ui/BG.png');
 
-    //this.load.image('logo', require('./assets/logo.png'));
+    //this.load.image('logo', require('./../src/assets/logo.png'));
     // load assets needed in our game
-    this.load.image('blueButton3', 'src/assets/ui/Button_13.png');
-  this.load.image('blueButton1', 'src/assets/ui/blue_button02.png');
-  this.load.image('blueButton2', 'src/assets/ui/blue_button03.png');
-  this.load.image('logo', 'src/assets/slidyPuzz.png');
-  this.load.image('box', 'src/assets/ui/grey_box.png');
-  this.load.image('checkedBox', 'src/assets/ui/blue_boxCheckmark.png');
-  this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
-  this.load.audio('buttonSound', 'src/assets/ui/Coffee1.mp3');
+    this.load.image('blueButton3', '../src/assets/ui/Button_13.png');
+  this.load.image('blueButton1', '../src/assets/ui/blue_button02.png');
+  this.load.image('blueButton2', '../src/assets/ui/blue_button03.png');
+  this.load.image('logo', '../src/assets/slidypuzz.png');
+  this.load.image('box', '../src/assets/ui/grey_box.png');
+  this.load.image('checkedBox', '../src/assets/ui/blue_boxCheckmark.png');
+  this.load.audio('bgMusic', ['../src/assets/TownTheme.mp3']);
+  this.load.audio('buttonSound', '../src/assets/ui/Coffee1.mp3');
 
-}
+} 
 create() {
 this.buttonsound = this.sound.add("buttonSound")
     this.add.image(400, 300, "background0");

@@ -8,15 +8,15 @@ export default class OptionsScene extends Phaser.Scene {
   
 preload(){
   // load assets needed in our game
-  this.load.image('blueButton', 'src/assets/ui/Button_62.png');
+  this.load.image('blueButton', '../src/assets/ui/Button_62.png');
  
-  this.load.image('phaserLogo', 'src/assets/logo.png');
-  this.load.image('musicBox', 'src/assets/ui/slice_Button_93.png');
-  this.load.image('soundBox', 'src/assets/ui/slice_Button_94.png');
-  this.load.image('sBox', 'src/assets/ui/slice_Button_133.png');
-  this.load.image('mBox', 'src/assets/ui/slice_Button_132.png');
-  this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
-  this.load.image('background', 'src/assets/ui/BG.png');
+  this.load.image('phaserLogo', '../src/assets/logo.png');
+  this.load.image('musicBox', '../src/assets/ui/slice_Button_93.png');
+  this.load.image('soundBox', '../src/assets/ui/slice_Button_94.png');
+  this.load.image('sBox', '../src/assets/ui/slice_Button_133.png');
+  this.load.image('mBox', '../src/assets/ui/slice_Button_132.png');
+  this.load.audio('bgMusic', ['../src/assets/TownTheme.mp3']);
+  this.load.image('background', '../src/assets/ui/BG.png');
 
 };
 

@@ -23,32 +23,32 @@ export default class gameScene extends Phaser.Scene{
     preload () {
        //level sliding puzzle picture array
        const pictures = [
-         'src/assets/pingu-puzzle.png',
-         'src/assets/karinna-hotel-uludag-genel_86791.jpg',
-         'src/assets/white-Snowhotel-Norway-Ski-Shop-Log-Cabin-Kirkenes-2144793.jpg',
-         'src/assets/grass.jpg',
-         'src/assets/flowers.jpg',
-         'src/assets/bicycle.jpg',
-         'src/assets/summer1.jpg',
-         'src/assets/summer2.jpg',
-         'src/assets/summer3.jpg',
-         'src/assets/autumn1.jpg',
-         'src/assets/autumn2.jpg',
-         'src/assets/autumn3.jpg',
+         '../src/assets/pingu-puzzle.png',
+         '../src/assets/karinna-hotel-uludag-genel_86791.jpg',
+         '../src/assets/white-Snowhotel-Norway-Ski-Shop-Log-Cabin-Kirkenes-2144793.jpg',
+         '../src/assets/grass.jpg',
+         '../src/assets/flowers.jpg',
+         '../src/assets/bicycle.jpg',
+         '../src/assets/summer1.jpg',
+         '../src/assets/summer2.jpg',
+         '../src/assets/summer3.jpg',
+         '../src/assets/autumn1.jpg',
+         '../src/assets/autumn2.jpg',
+         '../src/assets/autumn3.jpg',
        ];
        const slideSounds = [
-        'src/assets/dragslide.mp3',
-        'src/assets/dragslide.mp3',
-        'src/assets/dragslide.mp3',
-        'src/assets/grass.mp3',
-        'src/assets/grass.mp3',
-        'src/assets/grass.mp3',
-        'src/assets/water.wav',
-        'src/assets/water.wav',
-        'src/assets/water.wav',
-        'src/assets/leaves-14478.mp3',
-        'src/assets/leaves-14478.mp3',
-        'src/assets/leaves-14478.mp3',
+        '../src/assets/dragslide.mp3',
+        '../src/assets/dragslide.mp3',
+        '../src/assets/dragslide.mp3',
+        '../src/assets/grass.mp3',
+        '../src/assets/grass.mp3',
+        '../src/assets/grass.mp3',
+        '../src/assets/water.wav',
+        '../src/assets/water.wav',
+        '../src/assets/water.wav',
+        '../src/assets/leaves-14478.mp3',
+        '../src/assets/leaves-14478.mp3',
+        '../src/assets/leaves-14478.mp3',
        ]
         //set up a small pre-loader progress bar using Phaser's built-in loader plugin
         var progress = this.add.graphics();
@@ -83,19 +83,19 @@ export default class gameScene extends Phaser.Scene{
         this.load.image('puzzle_bg', pictures[this.level]);
         this.load.image('puzzle_bg1', pictures[this.level]);
 
-        this.load.image('background', 'src/assets/ui/BG.png');
-        this.load.image('wellDone', 'src/assets/wellDone.png')
+        this.load.image('background', '../src/assets/ui/BG.png');
+        this.load.image('wellDone', '../src/assets/wellDone.png')
         
         //load in the slide sound effect, the background music, and the win sound
-        this.load.audio('snowfall-bgm', 'src/assets/snowfall.mp3');
+        this.load.audio('snowfall-bgm', '../src/assets/snowfall.mp3');
         this.load.audio('slide-snd', slideSounds[this.level]);
-        this.load.audio('noot-snd', 'src/assets/noot.mp3');
-        this.load.image('blueButton', 'src/assets/ui/Button_62.png');
-        this.load.image('blueButton3', 'src/assets/ui/Button_13.png');
-        this.load.image('optionsButton', 'src/assets/ui/Button_29.png');
-        this.load.image('Button_15', 'src/assets/ui/Button_15.png');
-        this.load.image('spark', 'src/assets/particles/blue.png');
-        this.load.image('replay', 'src/assets/ui/replay.png');
+        this.load.audio('noot-snd', '../src/assets/noot.mp3');
+        this.load.image('blueButton', '../src/assets/ui/Button_62.png');
+        this.load.image('blueButton3', '../src/assets/ui/Button_13.png');
+        this.load.image('optionsButton', '../src/assets/ui/Button_29.png');
+        this.load.image('Button_15', '../src/assets/ui/Button_15.png');
+        this.load.image('spark', '../src/assets/particles/blue.png');
+        this.load.image('replay', '../src/assets/ui/replay.png');
 
         
 
@@ -299,8 +299,10 @@ emitter.setPosition(300, 300);
              }
              
                //if we've made it this far the game has been won!
-               if(_this.bgMusic){
-                  _this.bgMusic.stop()};
+               if(_this.model.bgMusicPlaying = true){
+                  _this.sys.game.globals.bgMusic.stop();
+                  _this.model.bgMusicPlaying = false;
+                  _this.cache.audio.remove('slide-snd')};
                   if( !_this.noot.isPlaying && _this.model.soundOn === true ){
                    
                    _this.noot.play();

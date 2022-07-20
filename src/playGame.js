@@ -14,15 +14,15 @@ export default class playGame extends Phaser.Scene{
         super("PlayGame");
     }
     preload(){
-        this.load.spritesheet("levelthumb", "src/assets/levelthumb.png", {
+        this.load.spritesheet("levelthumb", "../src/assets/levelthumb.png", {
             frameWidth: 60,
             frameHeight: 60
         });
-        this.load.image("levelpages", "src/assets/levelpages.png");
-        this.load.image("transp", "src/assets/transp.png");
-        this.load.audio('bgMusic', ['src/assets/TownTheme.mp3']);
-        this.load.image('background', 'src/assets/ui/BG.png');
-        this.load.image('blueButton', 'src/assets/ui/Button_62.png');
+        this.load.image("levelpages", "../src/assets/levelpages.png");
+        this.load.image("transp", "../src/assets/transp.png");
+        this.load.audio('bgMusic', ['../src/assets/TownTheme.mp3']);
+        this.load.image('background', '../src/assets/ui/BG.png');
+        this.load.image('blueButton', '../src/assets/ui/Button_62.png');
 
 
 
